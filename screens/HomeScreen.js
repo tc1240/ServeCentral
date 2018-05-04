@@ -1,5 +1,4 @@
 import React from 'react';
-import MapView from 'react-native-maps';
 import {
   Image,
   Platform,
@@ -13,6 +12,8 @@ import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
+import MapView from 'react-native-maps';
+
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
@@ -21,7 +22,8 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <MapView style={styles.map}
+        
+          <MapView style={styles.map}
             region={{
               latitude: 40.1580,
               longitude: -76.9882,
@@ -40,6 +42,15 @@ export default class HomeScreen extends React.Component {
             />
 
           </MapView>
+
+
+        <View style={styles.tabBarInfoContainer}>
+          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
+
+          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
+            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
+          </View>
+        </View>
       </View>
     );
   }
@@ -168,6 +179,7 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     position: 'absolute',
+    paddingTop: 750,
     top: 0,
     left: 0,
     bottom: 0,
