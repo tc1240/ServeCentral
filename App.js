@@ -5,6 +5,16 @@ import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
 import { Constants, Components } from 'expo';
 import MapView from 'react-native-maps';
+import * as firebase from 'firebase';
+
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyAHhF5RU-ODqvW4Sm8YxRo4d18Mys_x1qc",
+  authDomain: "https://binthr-1508505021265.firebaseapp.com",
+  databaseURL: "https://binthr-1508505021265.firebaseio.com",
+  storageBucket: "binthr-1508505021265"
+};
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 export default class App extends React.Component {
   constructor(props) {

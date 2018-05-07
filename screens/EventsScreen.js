@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { View, ListView, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import * as firebase from 'firebase';
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyAHhF5RU-ODqvW4Sm8YxRo4d18Mys_x1qc",
-  authDomain: "https://binthr-1508505021265.firebaseapp.com",
-  databaseURL: "https://binthr-1508505021265.firebaseio.com",
-  storageBucket: "binthr-1508505021265"
-};
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+import * as constants from '../App';
 
 export default class EventsScreen extends React.Component {
   static navigationOptions = {
@@ -19,7 +11,7 @@ export default class EventsScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    this.eventsRef = firebaseApp.database().ref('Events');
+    this.eventsRef = constants.firebaseApp.database().ref('Events');
 
     const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     this.state = {
@@ -57,7 +49,7 @@ export default class EventsScreen extends React.Component {
 
   _renderItem(event) {
     const onPress = () => {
-      alert('Hello There!');
+      console.log('Pressed');
     };
 
     return (<ListItem event={event} />);

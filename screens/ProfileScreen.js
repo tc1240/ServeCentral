@@ -7,18 +7,41 @@ import {
   StyleSheet 
 
 } from 'react-native';
+import * as constants from '../App';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
+  constructor(props) {
+    super(props);
+    this.profileRef = constants.firebaseApp.database().ref('Users/tcollins');
+    this.state = {
+      profileData: ''
+    }
+    this.profileRef.on('value', (snap) => {
+
+      user = {
+        email: snap.child('email').val(),
+        name: snap.child('name').val(),
+      };
+
+      this.setState({
+        profileData: user
+      });
+
+      console.log(this.state.profileData);
+    });
+  }
+
   render() {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.container}>
           <Image source={require('../assets/images/icon1.png')} style={styles.profPic} /> 
-          <Text style={styles.username}>Rob Williams</Text>
+          <Text style={styles.username}>{this.state.profileData.name}</Text>
+          <Text style={styles.username}>{this.state.profileData.email}</Text>
         </View>
       </ScrollView>
     );
