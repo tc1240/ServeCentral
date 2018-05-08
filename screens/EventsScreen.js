@@ -56,7 +56,7 @@ export default class EventsScreen extends React.Component {
   }
 }
 
-class ListItem extends Component {
+class ListItem extends Component {      
   render() {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
