@@ -54,7 +54,37 @@ export default class ProfileScreen extends React.Component {
 
     const chart_wh = 210;
     //sizes of slices
-    const series = [
+
+    var environmental = 0; 
+    environmental += this.state.profileData.environmental;
+    var social = 0; 
+    social += this.state.profileData.social;
+    var construction = 0; 
+    construction += this.state.profileData.construction;
+    var walk = 0; 
+    walk += this.state.profileData.walk;
+    var fundraiser = 0; 
+    fundraiser += this.state.profileData.fundraiser;
+    var ministry = 0; 
+    ministry += this.state.profileData.ministry;
+
+
+    const dataSeries = [
+      /* {this.state.profileData.environmental}, 
+      {this.state.profileData.social}, 
+      {this.state.profileData.construction}, 
+      {this.state.profileData.walk}, 
+      {this.state.profileData.fundraiser}, 
+      {this.state.profileData.ministry}, */
+      environmental,
+      social,
+      construction,
+      walk,
+      fundraiser,
+      ministry,
+
+    ];
+    const blankSeries = [
       /* {this.state.profileData.environmental}, 
       {this.state.profileData.social}, 
       {this.state.profileData.construction}, 
@@ -69,6 +99,12 @@ export default class ProfileScreen extends React.Component {
       1,
 
     ];
+
+    let series =
+      isNaN(dataSeries)
+        ? blankSeries
+        : dataSeries;
+
     const sliceColor = ['#F44336','#2196F3','#FFEB3B','purple','#4CAF50','#FF9800'];
 
     let iconLeaf =
