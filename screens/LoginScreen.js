@@ -1,16 +1,22 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Image, View, TextInput,Text,Button } from 'react-native';
+import { ScrollView, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import{StackNavigator} from 'react-navigation';
 
-import LinksScreen from './LinksScreen';
-import SettingsScreen from './SettingsScreen';
+import * as firebase from 'firebase';
+import {Actions} from 'react-native-router-flux';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
     title: 'Login',
   };
   
+  register() {
+    Actions.register()
+  }
+  goToMain() {
+    Actions.main()
+  }
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -37,6 +43,7 @@ export default class LoginScreen extends React.Component {
             onChangeText={(text) => this.setState({text})}
             value={this.state}
             placeholder="Password"
+            secureTextEntry={true}
             />
             <Button
             title="Login"
@@ -44,12 +51,14 @@ export default class LoginScreen extends React.Component {
               borderWidth: 3,
               backgroundColor: 'blue'
             }}
-            onPress={() => this.props.navigation.navigate('Details')}
+            onPress={this.goToMain}
             />
+            <TouchableOpacity onPress={this.register}><Text>Don't have an account? Register!</Text></TouchableOpacity>
       </View>
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {

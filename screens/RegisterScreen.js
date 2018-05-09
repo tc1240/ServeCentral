@@ -1,15 +1,21 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Image, View, TextInput,Text,Button } from 'react-native';
+import { ScrollView, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import{StackNavigator} from 'react-navigation';
 
-import LinksScreen from './LinksScreen';
-import SettingsScreen from './SettingsScreen';
+import {Actions} from 'react-native-router-flux';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
     title: 'Register',
   };
+    login() {
+      Actions.login()
+    }
+    goToMain(){
+      Actions.main()
+    }
+
   
   render() {
     const { navigate } = this.props.navigation;
@@ -68,8 +74,9 @@ export default class LoginScreen extends React.Component {
               borderWidth: 3,
               backgroundColor: 'blue'
             }}
-            onPress={() => this.props.navigation.navigate('LoginScreen')}
+            onPress={this.goToMain}
             />
+            <TouchableOpacity onPress={this.login}><Text>Already have an account? Login!</Text></TouchableOpacity>
       </View>
     );
   }

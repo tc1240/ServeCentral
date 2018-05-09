@@ -6,6 +6,8 @@ import RootNavigation from './navigation/RootNavigation';
 import { Constants, Components } from 'expo';
 import MapView from 'react-native-maps';
 import * as firebase from 'firebase';
+import Login from './screens/LoginScreen';
+import Routes from './components/Routes';
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -38,7 +40,7 @@ export default class App extends React.Component {
         <View style={styles.container}>
           <View style={styles.nav}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <RootNavigation />
+            <Routes/>
           </View>
         </View>
       );
