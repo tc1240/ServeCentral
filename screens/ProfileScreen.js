@@ -2,6 +2,7 @@ import React from 'react';
 import * as constants from '../App';
 import PieChart from 'react-native-pie-chart';
 import { Ionicons } from '@expo/vector-icons';
+import * as firebase from 'firebase';
 import { Platform } from 'react-native';
 import { 
   Text, 
@@ -16,14 +17,33 @@ import {
 var { height } = Dimensions.get('window'); 
 var { width } = Dimensions.get('window'); 
 
+
+
+
+
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
   };
-
+  getUser(){
+    try{
+      console.log("test1");
+      if(firebase.auth().currentUser != null){
+        console.log("test2");
+        var user = firebase.auth().currentUser;
+        console.log(user.uid);
+        return user.uid;
+      }
+      console.log("test3");
+    }
+    catch (error) {
+      console.log(error.toString())
+    }
+  }
+  
   constructor(props) {
     super(props);
-    this.profileRef = constants.firebaseApp.database().ref('Users/Tyler');
+    this.profileRef = constants.firebaseApp.database().ref('Users/'+this.getUser());
     this.state = {
       profileData: ''
     }
@@ -171,7 +191,7 @@ export default class ProfileScreen extends React.Component {
           </View>
         </View>
         <View style={[styles.bot]}>
-          <Text style={[styles.history]}>History   ></Text>
+          <Text style={[styles.history]}>History</Text>
         </View>
       </View>
     

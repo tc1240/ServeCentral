@@ -12,15 +12,26 @@ export default class LoginScreen extends React.Component {
   };
   state = {
     emial: '',
-    password: ''
+    password: '',
+    firstname: '',
+    lastname: ''
   }
-  async signup(email, pass) {
+  async signup(e, pass, firstname, lastname) {
 
     try {
-      console.log(email.toString());
+      console.log(e.toString());
       console.log(pass.toString());
-        await firebase.auth().createUserWithEmailAndPassword(email, pass);
-        Actions.goToMain();
+      await firebase.auth().createUserWithEmailAndPassword(e, pass);
+      var user = firebase.auth().currentUser.uid;
+        firebase.database().ref('Users/'+user).set(
+        {
+          email: e,
+          name: firstname + " " + lastname,
+          serviceHours: 0
+
+        }
+      )
+        Actions.login();
         console.log("Account created");
 
         // Navigate to the Home page, the user is auto logged in
@@ -53,12 +64,12 @@ export default class LoginScreen extends React.Component {
             />
             <TextInput
             style={styles.loginItems}
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={(text) => this.setState({first:text})}
             placeholder="Firstname"
             />
             <TextInput
             style={styles.loginItems}
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={(text) => this.setState({last:text})}
             value={this.state}
             placeholder="Lastname"
             />
@@ -66,12 +77,6 @@ export default class LoginScreen extends React.Component {
             style={styles.loginItems}
             onChangeText={(text1) => this.setState({email:text1})}
             placeholder="email"
-            />
-            <TextInput
-            style={styles.loginItems}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state}
-            placeholder="Username"
             />
             <TextInput
             style={styles.loginItems}
@@ -89,7 +94,7 @@ export default class LoginScreen extends React.Component {
               borderWidth: 3,
               backgroundColor: 'blue'
             }}
-            onPress={() => this.signup(this.state.email,this.state.pass)}
+            onPress={() => this.signup(this.state.email,this.state.pass,this.state.first,this.state.last)}
             />
             <TouchableOpacity onPress={this.login}><Text>Already have an account? Login!</Text></TouchableOpacity>
       </View>
