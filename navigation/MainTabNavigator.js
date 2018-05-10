@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
-
+import * as firebase from 'firebase';
 import Colors from '../constants/Colors';
 
 import MapScreen from '../screens/MapScreen';
