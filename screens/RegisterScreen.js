@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import{StackNavigator} from 'react-navigation';
+import * as firebase from 'firebase';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -9,12 +10,29 @@ export default class LoginScreen extends React.Component {
   static navigationOptions = {
     title: 'Register',
   };
-    login() {
-      Actions.login()
+  state = {
+    emial: '',
+    password: ''
+  }
+  async signup(email, pass) {
+
+    try {
+      console.log(email.toString());
+      console.log(pass.toString());
+        await firebase.auth().createUserWithEmailAndPassword(email, pass);
+        Actions.goToMain();
+        console.log("Account created");
+
+        // Navigate to the Home page, the user is auto logged in
+
+    } catch (error) {
+        console.log(error.toString())
     }
-    goToMain(){
-      Actions.main()
-    }
+
+  }
+  login() {
+    Actions.login()
+  }
 
   
   render() {
@@ -46,8 +64,7 @@ export default class LoginScreen extends React.Component {
             />
             <TextInput
             style={styles.loginItems}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state}
+            onChangeText={(text1) => this.setState({email:text1})}
             placeholder="email"
             />
             <TextInput
@@ -58,14 +75,12 @@ export default class LoginScreen extends React.Component {
             />
             <TextInput
             style={styles.loginItems}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state}
+            onChangeText={(text) => this.setState({pass:text})}
             placeholder="Password"
             />
             <TextInput
             style={styles.loginItems}
             onChangeText={(text) => this.setState({text})}
-            value={this.state}
             placeholder="Confirm Password"
             />
             <Button
@@ -74,7 +89,7 @@ export default class LoginScreen extends React.Component {
               borderWidth: 3,
               backgroundColor: 'blue'
             }}
-            onPress={this.goToMain}
+            onPress={() => this.signup(this.state.email,this.state.pass)}
             />
             <TouchableOpacity onPress={this.login}><Text>Already have an account? Login!</Text></TouchableOpacity>
       </View>
