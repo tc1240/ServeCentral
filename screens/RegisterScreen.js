@@ -20,7 +20,7 @@ export default class LoginScreen extends React.Component {
       console.log(email.toString());
       console.log(pass.toString());
         await firebase.auth().createUserWithEmailAndPassword(email, pass);
-        Actions.goToMain();
+        Actions.main();
         console.log("Account created");
 
         // Navigate to the Home page, the user is auto logged in
