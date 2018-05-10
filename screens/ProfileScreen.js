@@ -27,7 +27,7 @@ export default class ProfileScreen extends React.Component {
     this.state = {
       profileData: ''
     }
-    this.profileRef.on('value', (snap) => {
+    this.profileRef.once('value', (snap) => {
 
       user = {
         email: snap.child('email').val(),
@@ -40,7 +40,6 @@ export default class ProfileScreen extends React.Component {
         fundraiser: snap.child('tags/Fundraiser').val(),
         ministry: snap.child('tags/Ministry').val(),
       };
-
 
       this.setState({
         profileData: user
@@ -68,44 +67,18 @@ export default class ProfileScreen extends React.Component {
     var ministry = 0; 
     ministry += this.state.profileData.ministry;
 
-
-    const dataSeries = [
-      /* {this.state.profileData.environmental}, 
-      {this.state.profileData.social}, 
-      {this.state.profileData.construction}, 
-      {this.state.profileData.walk}, 
-      {this.state.profileData.fundraiser}, 
-      {this.state.profileData.ministry}, */
-      environmental,
-      social,
-      construction,
-      walk,
-      fundraiser,
-      ministry,
-
-    ];
-    const blankSeries = [
-      /* {this.state.profileData.environmental}, 
-      {this.state.profileData.social}, 
-      {this.state.profileData.construction}, 
-      {this.state.profileData.walk}, 
-      {this.state.profileData.fundraiser}, 
-      {this.state.profileData.ministry}, */
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-
-    ];
-
     let series =
-      isNaN(dataSeries)
-        ? blankSeries
-        : dataSeries;
+      isNaN(environmental)
+        ? series = [1,1,1,1,1,1]
+        : series = [
+          environmental,
+          social,
+          construction,
+          walk,
+          fundraiser,
+          ministry,];
 
-    const sliceColor = ['#F44336','#2196F3','#FFEB3B','purple','#4CAF50','#FF9800'];
+    const sliceColor = ['#4CAF50','purple','#FFEB3B','#FF9800','#2196F3','#F44336'];
 
     let iconLeaf =
       Platform.OS === 'ios'
