@@ -54,7 +54,7 @@ export default class ProfileScreen extends React.Component {
     const chart_wh = 210;
     //sizes of slices
 
-    var environmental = 0; 
+    var environmental = 1; 
     environmental += this.state.profileData.environmental;
     var social = 0; 
     social += this.state.profileData.social;
@@ -78,7 +78,7 @@ export default class ProfileScreen extends React.Component {
           fundraiser,
           ministry,];
 
-    const sliceColor = ['#4CAF50','purple','#FFEB3B','#FF9800','#2196F3','#F44336'];
+    const sliceColor = ['#4CAF50','purple','#FF9800','#2196F3','#F44336'];
 
     let iconLeaf =
       Platform.OS === 'ios'
