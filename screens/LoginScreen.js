@@ -10,12 +10,28 @@ export default class LoginScreen extends React.Component {
   static navigationOptions = {
     title: 'Login',
   };
+  async login(username, password) {
+    
+    try {
+        await firebase.auth()
+            .signInWithEmailAndPassword(username, password);
+
+        console.log("Logged In!");
+        Actions.main();
+        // Navigate to the Home page
+
+    } catch (error) {
+        console.log(error.toString())
+    }
+
+}
+state = {
+  username: '',
+  password: ''
+}
   
   register() {
     Actions.register()
-  }
-  goToMain() {
-    Actions.main()
   }
   render() {
     const { navigate } = this.props.navigation;
@@ -34,16 +50,16 @@ export default class LoginScreen extends React.Component {
             />          
             <TextInput
             style={styles.loginItems}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state}
-            placeholder="Username"
+            placeholder="Email"
+            onChangeText={(text) => this.setState({username: text})}
             />
             <TextInput
             style={styles.loginItems}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state}
             placeholder="Password"
             secureTextEntry={true}
+            password={true}
+            onChangeText={(text1) => this.setState({password: text1})}
+            
             />
             <Button
             title="Login"
@@ -51,7 +67,7 @@ export default class LoginScreen extends React.Component {
               borderWidth: 3,
               backgroundColor: 'blue'
             }}
-            onPress={this.goToMain}
+            onPress={() => this.login(this.state.username,this.state.password)}
             />
             <TouchableOpacity onPress={this.register}><Text>Don't have an account? Register!</Text></TouchableOpacity>
       </View>
