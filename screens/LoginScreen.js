@@ -25,6 +25,7 @@ export default class LoginScreen extends React.Component {
     }
 
 }
+
 state = {
   username: '',
   password: ''
@@ -43,7 +44,7 @@ state = {
         <Image
               source={
                 __DEV__
-                  ? require('../assets/images/robot-dev.png')
+                  ? require('../assets/images/icon1.png')
                   : require('../assets/images/robot-prod.png')
               }
               style={styles.imageStyle}
@@ -66,10 +67,11 @@ state = {
             style={{
               borderWidth: 3,
               backgroundColor: 'blue'
+              
             }}
             onPress={() => this.login(this.state.username,this.state.password)}
             />
-            <TouchableOpacity onPress={this.register}><Text>Don't have an account? Register!</Text></TouchableOpacity>
+            <TouchableOpacity onPress={this.register}><Text>Don't have an account? Register here!</Text></TouchableOpacity>
       </View>
     );
   }
@@ -92,8 +94,8 @@ const styles = StyleSheet.create({
     width: 250
   },
   imageStyle:{
-    width: 50,
-    height: 50,
+    width: 150,
+    height: 150,
     resizeMode: 'contain'
   }
 });
