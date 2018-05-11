@@ -56,7 +56,7 @@ export default class LoginScreen extends React.Component {
         <Image
               source={
                 __DEV__
-                  ? require('../assets/images/robot-dev.png')
+                  ? require('../assets/images/icon1.png')
                   : require('../assets/images/robot-prod.png')
               }
               style={styles.imageStyle}
@@ -70,7 +70,6 @@ export default class LoginScreen extends React.Component {
             <TextInput
             style={styles.loginItems}
             onChangeText={(text) => this.setState({last:text})}
-            value={this.state}
             placeholder="Lastname"
             />
             <TextInput
@@ -118,8 +117,8 @@ const styles = StyleSheet.create({
     width: 250
   },
   imageStyle:{
-    width: 50,
-    height: 50,
+    width: 150,
+    height: 150,
     resizeMode: 'contain'
   }
 });
