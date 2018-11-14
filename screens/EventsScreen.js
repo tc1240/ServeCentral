@@ -12,7 +12,7 @@ export default class EventsScreen extends React.Component {
     super(props);
 
     this.eventsRef = constants.firebaseApp.database().ref('Events');
-
+    
     const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     this.state = {
       dataSource: dataSource,

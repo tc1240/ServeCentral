@@ -1,4 +1,10 @@
 import React from 'react';
+import * as firebase from 'firebase';
+import * as constants from '../App';
+import { WebBrowser } from 'expo';
+import { MonoText } from '../components/StyledText';
+import MapView from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import {
   Image,
   Platform,
@@ -8,44 +14,72 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
-
-import { MonoText } from '../components/StyledText';
-
-import MapView from 'react-native-maps';
 
 export default class MapScreen extends React.Component {
+
   static navigationOptions = {
     header: null,
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
+  constructor(props) {
+    super(props);
+    this.state = {
+        markerData: []
+    }
+}
+
+componentDidMount() {
+  // this.listenForMarkers(this.eventsRef);
+}
+
+listenForMarkers(eventsRef) {
+  eventsRef.on('value', (snap) => {
+    var events = [];
+    snap.forEach((child) => {
+      events.push({
+        event: child.val(),
+        _key: child.key
+      });
+    });
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(events)
+    });
+  });
+}
+
+render() {
+    return(
+        <MapView style={styles.map}
+        region={{
+          latitude: 40.1510,
+          longitude: -76.9812,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1
+        }}
+      >
+            {/* {this.state.markerData.event(marker => (
+              <Marker
+                title={marker.name}
+                key={marker.key}
+                description={'Test'}
+                coordinate={{
+                  latitude: marker.latitude,
+                  longitude: marker.longitude
+                }} />
+            ))} */}
         
-          <MapView style={styles.map}
-            region={{
-              latitude: 40.1580,
-              longitude: -76.9882,
-              latitudeDelta: 0.1,
-              longitudeDelta: 0.1
-            }}
-          >
+        <Marker
+                  title={"You are here"}
+                  description={'Like right here'}
+                  coordinate={{
+                    latitude: 40.1510,
+                    longitude: -76.9812,
+                  }} />
 
-            <MapView.Marker
-              coordinate={{
-                latitude: 40.1580,
-                longitude: -76.9882,
-              }}
-              title={"You is here"}
-              description={"like right here"}
-            />
-
-          </MapView>
-          
-      </View>
-    );
-  }
+        </MapView>
+    )
+}
 
   _handleLearnMorePress = () => {
     WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
@@ -62,49 +96,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
   },
   tabBarInfoContainer: {
     position: 'absolute',
@@ -125,25 +116,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fbfbfb',
     paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
   map: {
     flex: 1,

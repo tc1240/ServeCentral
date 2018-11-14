@@ -1,14 +1,14 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity } from 'react-native';
+import { ToastAndroid, ScrollView, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import{StackNavigator} from 'react-navigation';
 import * as firebase from 'firebase';
-
+import * as constants from '../App';
 import {Actions} from 'react-native-router-flux';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
-    title: 'Register',
+    header: null
   };
   state = {
     emial: '',
@@ -27,17 +27,26 @@ export default class LoginScreen extends React.Component {
         {
           email: e,
           name: firstname + " " + lastname,
-          serviceHours: 0
-
+          serviceHours: 0,
+          tags: {
+            environmental: 0,
+            social: 0,
+            construction: 0,
+            walk:0,
+            fundraiser:0,
+            ministry:0,
+          }
         }
       )
         Actions.login();
         console.log("Account created");
+        ToastAndroid.showWithGravity("Account Created!", ToastAndroid.LONG, ToastAndroid.BOTTOM);
 
         // Navigate to the Home page, the user is auto logged in
 
     } catch (error) {
         console.log(error.toString())
+        ToastAndroid.showWithGravity("Be sure all fields are filled, your password is longer than 6 characters, and contains a number", ToastAndroid.LONG, ToastAndroid.BOTTOM);
     }
 
   }
@@ -47,7 +56,7 @@ export default class LoginScreen extends React.Component {
 
   
   render() {
-    const { navigate } = this.props.navigation;
+    //const { navigate } = this.props.navigation;
     return (
       
       <View style={styles.container}>
@@ -62,6 +71,7 @@ export default class LoginScreen extends React.Component {
               style={styles.imageStyle}
               
             />
+            <Text style={styles.header}>Register</Text>    
             <TextInput
             style={styles.loginItems}
             onChangeText={(text) => this.setState({first:text})}
@@ -81,21 +91,23 @@ export default class LoginScreen extends React.Component {
             style={styles.loginItems}
             onChangeText={(text) => this.setState({pass:text})}
             placeholder="Password"
+            password={true}
+            secureTextEntry={true}
             />
             <TextInput
             style={styles.loginItems}
             onChangeText={(text) => this.setState({text})}
             placeholder="Confirm Password"
+            password={true}
+            secureTextEntry={true}
             />
             <Button
             title="Register"
-            style={{
-              borderWidth: 3,
-              backgroundColor: 'blue'
-            }}
+            style={styles.regBtn}
+            color="#a9435b"
             onPress={() => this.signup(this.state.email,this.state.pass,this.state.first,this.state.last)}
             />
-            <TouchableOpacity onPress={this.login}><Text>Already have an account? Login!</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.regHere} onPress={this.login}><Text>Already have an account? Login!</Text></TouchableOpacity>
       </View>
     );
   }
@@ -104,21 +116,33 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
+    paddingTop: 30,
     backgroundColor: '#fff',
     alignItems: 'center'
+  },
+  header: {
+    paddingTop: 10,
+    color: '#333',
+    fontSize: 25,
+    textDecorationLine: "underline",
+    fontWeight: "bold"
   },
   loginItems:{
     marginTop: 10,
     marginBottom: 10,
     height: 40, 
-    borderColor: 'gray', 
-    borderBottomWidth: 3,
     width: 250
   },
   imageStyle:{
     width: 150,
     height: 150,
     resizeMode: 'contain'
+  },
+  regBtn:{
+    marginTop: 10,
+    borderWidth: 3
+  },
+  regHere:{
+    marginTop: 20,
   }
 });

@@ -17,24 +17,17 @@ import {
 var { height } = Dimensions.get('window'); 
 var { width } = Dimensions.get('window'); 
 
-
-
-
-
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
   };
   getUser(){
     try{
-      console.log("test1");
       if(firebase.auth().currentUser != null){
-        console.log("test2");
         var user = firebase.auth().currentUser;
         console.log(user.uid);
         return user.uid;
       }
-      console.log("test3");
     }
     catch (error) {
       console.log(error.toString())
@@ -53,12 +46,12 @@ export default class ProfileScreen extends React.Component {
         email: snap.child('email').val(),
         name: snap.child('name').val(),
         serviceHours: snap.child('serviceHours').val(),
-        environmental: snap.child('tags/Environmental').val(),
-        social: snap.child('tags/Social').val(),
-        construction: snap.child('tags/Construction').val(),
-        walk: snap.child('tags/Walk').val(),
-        fundraiser: snap.child('tags/Fundraiser').val(),
-        ministry: snap.child('tags/Ministry').val(),
+        environmental: snap.child('tags/environmental').val(),
+        social: snap.child('tags/social').val(),
+        construction: snap.child('tags/construction').val(),
+        walk: snap.child('tags/walk').val(),
+        fundraiser: snap.child('tags/fundraiser').val(),
+        ministry: snap.child('tags/ministry').val(),
       };
 
       this.setState({
@@ -74,7 +67,7 @@ export default class ProfileScreen extends React.Component {
     const chart_wh = 210;
     //sizes of slices
 
-    var environmental = 1; 
+    var environmental = 0; 
     environmental += this.state.profileData.environmental;
     var social = 0; 
     social += this.state.profileData.social;
@@ -87,8 +80,9 @@ export default class ProfileScreen extends React.Component {
     var ministry = 0; 
     ministry += this.state.profileData.ministry;
 
+    //let pie chart = equal sides if the returned firebase data is either NaN or all 0's (all 0's and NaN cause the chart to break)
     let series =
-      isNaN(environmental)
+      isNaN(environmental)||(environmental==0 && social==0 && construction==0 && walk==0 && fundraiser==0 && ministry==0)
         ? series = [1,1,1,1,1,1]
         : series = [
           environmental,
@@ -98,7 +92,7 @@ export default class ProfileScreen extends React.Component {
           fundraiser,
           ministry,];
 
-    const sliceColor = ['#4CAF50','purple','#FF9800','#2196F3','#F44336'];
+    const sliceColor = ['#4CAF50','purple','#FFEB3B','#FF9800','#2196F3','#F44336'];
 
     let iconLeaf =
       Platform.OS === 'ios'
@@ -125,7 +119,7 @@ export default class ProfileScreen extends React.Component {
         ? `ios-bookmarks`
         : 'md-bookmarks'; 
     return (
-      
+      //NEEDS TO BE AN ON CLICK GET EVENT AND DISPLAY EVENT GOTTEN ON EVENT INFO
       <View style={styles.container}>
         <View style={[styles.top]}>
           <Image source={require('../assets/images/profPic.png')} style={styles.profPic} /> 
