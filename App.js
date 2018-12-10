@@ -9,7 +9,7 @@ import * as firebase from 'firebase';
 import Login from './screens/LoginScreen';
 import Routes from './components/Routes';
 
-// Initialize Firebase - Comment
+// Initialize Firebase This is changed
 const firebaseConfig = {
   apiKey: "AIzaSyAHhF5RU-ODqvW4Sm8YxRo4d18Mys_x1qc",
   authDomain: "https://binthr-1508505021265.firebaseapp.com",
