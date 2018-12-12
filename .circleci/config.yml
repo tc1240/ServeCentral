@@ -35,6 +35,7 @@ jobs:
           
       # run tests!
       - run: yarn test StyledText-test.js
-      - run: docker-compose build --pull
+      - run:
+        command: docker-compose build --pull
 
 
