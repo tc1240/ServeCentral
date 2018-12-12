@@ -34,7 +34,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
           
       # run tests!
-      - run: no_output_timeout
       - run: yarn test StyledText-test.js
 
 
