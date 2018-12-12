@@ -34,6 +34,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
           
       # run tests!
-      - run: yarn test components/__test__
+      - run: yarn test ServeCentral/components/__tests__/StyledText-test.js
 
 
