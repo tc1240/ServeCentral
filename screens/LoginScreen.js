@@ -51,7 +51,7 @@ state = {
               }
               style={styles.imageStyle}
             />      
-            <Text style={styles.header}>Logggggiiiiin</Text>    
+            <Text style={styles.header}>Loggggiiiiin</Text>    
             <TextInput
             style={styles.loginItems}
             placeholder="Email"
