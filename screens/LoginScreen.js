@@ -4,6 +4,7 @@ import{StackNavigator} from 'react-navigation';
 import * as constants from '../App';
 import * as firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
+import {Alert} from 'react-native';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -23,8 +24,13 @@ export default class LoginScreen extends React.Component {
 
     } catch (error) {
         console.log(error.toString())
-        ToastAndroid.showWithGravity("Incorrect Username or Password", ToastAndroid.LONG, ToastAndroid.BOTTOM);
-    }
+        //ToastAndroid.showWithGravity("Incorrect Username or Password", ToastAndroid.LONG, ToastAndroid.BOTTOM);
+        Alert.alert(
+          'Incorrect Username or Password', '',
+          [ {text: 'OK', onPress: () => console.log('OK Pressed')}, ],
+          {cancelable: false},
+        );
+      }
 
 }
 
