@@ -4,6 +4,7 @@ import{StackNavigator} from 'react-navigation';
 import * as constants from '../App';
 import * as firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
+import colors from '../constants/Colors';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -51,10 +52,12 @@ state = {
               }
               style={styles.imageStyle}
             />      
-            <Text style={styles.header}>Logggiiiiin</Text>    
+            <Text style={styles.header}>Login</Text>    
             <TextInput
             style={styles.loginItems}
             placeholder="Email"
+            autoCapitalize={"none"}
+            placeholderTextColor={colors.maroon}
             onChangeText={(text) => this.setState({username: text})}
             />
             <TextInput
@@ -62,13 +65,15 @@ state = {
             placeholder="Password"
             secureTextEntry={true}
             password={true}
+            autoCapitalize={"none"}
+            placeholderTextColor={colors.maroon}
             onChangeText={(text1) => this.setState({password: text1})}
             
             />
             <Button
             title="Login"
             style={styles.loginBtn}
-            color="#a9435b"
+            color={colors.maroon}
             onPress={() => this.login(this.state.username,this.state.password)}
             />
             <TouchableOpacity 
@@ -85,13 +90,13 @@ state = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.tan,
     paddingTop: 45,
     alignItems: 'center'
   },
   header: {
     paddingTop: 10,
-    color: '#333',
+    color: '#000',
     fontSize: 25,
     textDecorationLine: "underline",
     fontWeight: "bold"
