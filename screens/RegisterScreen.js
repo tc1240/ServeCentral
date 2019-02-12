@@ -5,6 +5,7 @@ import{StackNavigator} from 'react-navigation';
 import * as firebase from 'firebase';
 import * as constants from '../App';
 import {Actions} from 'react-native-router-flux';
+import colors from '../constants/Colors';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -76,16 +77,19 @@ export default class LoginScreen extends React.Component {
             style={styles.loginItems}
             onChangeText={(text) => this.setState({first:text})}
             placeholder="Firstname"
+            placeholderTextColor={colors.maroon}
             />
             <TextInput
             style={styles.loginItems}
             onChangeText={(text) => this.setState({last:text})}
             placeholder="Lastname"
+            placeholderTextColor={colors.maroon}
             />
             <TextInput
             style={styles.loginItems}
             onChangeText={(text1) => this.setState({email:text1})}
             placeholder="email"
+            placeholderTextColor={colors.maroon}
             />
             <TextInput
             style={styles.loginItems}
@@ -93,6 +97,7 @@ export default class LoginScreen extends React.Component {
             placeholder="Password"
             password={true}
             secureTextEntry={true}
+            placeholderTextColor={colors.maroon}
             />
             <TextInput
             style={styles.loginItems}
@@ -100,11 +105,12 @@ export default class LoginScreen extends React.Component {
             placeholder="Confirm Password"
             password={true}
             secureTextEntry={true}
+            placeholderTextColor={colors.maroon}
             />
             <Button
             title="Register"
             style={styles.regBtn}
-            color="#a9435b"
+            color={colors.maroon}
             onPress={() => this.signup(this.state.email,this.state.pass,this.state.first,this.state.last)}
             />
             <TouchableOpacity style={styles.regHere} onPress={this.login}><Text>Already have an account? Login!</Text></TouchableOpacity>
@@ -117,12 +123,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 30,
-    backgroundColor: '#fff',
+    backgroundColor: colors.tan,
     alignItems: 'center'
   },
   header: {
     paddingTop: 10,
-    color: '#333',
+    color: '#000',
     fontSize: 25,
     textDecorationLine: "underline",
     fontWeight: "bold"
