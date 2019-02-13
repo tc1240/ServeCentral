@@ -26,7 +26,7 @@ export default class LoginScreen extends React.Component {
 
       this.validate(e, pass, firstname, lastname, cpass);
       if(this.state.errors.length > 0){
-        //change the fields?
+        
         console.log(this.state.errors);
         var i;
         for(i = 0; i < this.state.errors.length; i++){
