@@ -5,6 +5,7 @@ import * as constants from '../App';
 import * as firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import colors from '../constants/Colors';
+import Toast, {DURATION} from 'react-native-easy-toast';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -18,14 +19,16 @@ export default class LoginScreen extends React.Component {
 
         console.log("Logged In!");
         //Example of Toast below
-        ToastAndroid.showWithGravity("Login Successful!", ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        this.refs.toast.show('Login Successful!', 1500);
+
         Actions.main();
         // Navigate to the Home page
 
     } catch (error) {
         console.log(error.toString())
-        ToastAndroid.showWithGravity("Incorrect Username or Password", ToastAndroid.LONG, ToastAndroid.BOTTOM);
-    }
+
+        this.refs.toast.show('Incorrect Username or Password', 1500);
+      }
 
 }
 
@@ -81,6 +84,7 @@ state = {
             onPress={this.register}>
               <Text>Don't have an account? Register here!</Text>
             </TouchableOpacity>
+            <Toast ref="toast"/>
       </View>
     );
   }
