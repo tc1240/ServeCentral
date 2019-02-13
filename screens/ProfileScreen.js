@@ -4,6 +4,7 @@ import PieChart from 'react-native-pie-chart';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
 import { Platform } from 'react-native';
+import colors from '../constants/Colors';
 import { 
   Text, 
   View,
@@ -92,7 +93,7 @@ export default class ProfileScreen extends React.Component {
           fundraiser,
           ministry,];
 
-    const sliceColor = ['#4CAF50','purple','#FFEB3B','#FF9800','#2196F3','#F44336'];
+    const sliceColor = ['#4CAF50','purple','#ED0','#FF9800','#2196F3','#F44336'];
 
     let iconLeaf =
       Platform.OS === 'ios'
@@ -131,9 +132,9 @@ export default class ProfileScreen extends React.Component {
               chart_wh={chart_wh}
               series={series}
               sliceColor={sliceColor}
-              doughnut={true}
+              doughnut={true} 
               coverRadius={0.45}
-              coverFill={'#FFF'}
+              coverFill={colors.tan}
           />
           <Text style={[styles.text, styles.hours]}>{this.state.profileData.serviceHours} Total Hours</Text>
           
@@ -154,7 +155,7 @@ export default class ProfileScreen extends React.Component {
               name={iconConstruct}
               size={28}
               style={[styles.icon]}
-              color={'#FFEB3B'}
+              color={'#ED0'}
             />
             <Ionicons
               name={iconWalk}
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     //flex is how much room this will take up, so flex 1 means that 1 is 100% of screenspace
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fff',
+    backgroundColor: colors.tan,
   },
   text:{
     position: 'absolute',

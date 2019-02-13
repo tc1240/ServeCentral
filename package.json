@@ -1,6 +1,6 @@
 {
   "main": "node_modules/expo/AppEntry.js",
-  "private": true,
+  "private": false,
   "scripts": {
     "test": "node ./node_modules/jest/bin/jest.js"
   },
