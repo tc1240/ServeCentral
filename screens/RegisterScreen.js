@@ -5,6 +5,7 @@ import{StackNavigator} from 'react-navigation';
 import * as firebase from 'firebase';
 import * as constants from '../App';
 import {Actions} from 'react-native-router-flux';
+import colors from '../constants/Colors';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -138,6 +139,7 @@ export default class LoginScreen extends React.Component {
               style={styles.loginItems}
               onChangeText={(text) => this.setState({first:text})}
               placeholder="Firstname"
+              placeholderTextColor={colors.maroon}
               onSubmitEditing={() => { this.lastName.focus(); }}
               />
               <TextInput
@@ -146,6 +148,7 @@ export default class LoginScreen extends React.Component {
               placeholder="Lastname"
               ref={(input) => { this.lastName = input; }}
               onSubmitEditing={() => { this.email.focus(); }}
+              placeholderTextColor={colors.maroon}
               />
               <TextInput
               style={styles.loginItems}
@@ -153,6 +156,7 @@ export default class LoginScreen extends React.Component {
               placeholder="Email"
               ref={(input) => { this.email = input; }}
               onSubmitEditing={() => { this.password.focus(); }}
+              placeholderTextColor={colors.maroon}
               />
               <TextInput
               style={styles.loginItems}
@@ -160,6 +164,7 @@ export default class LoginScreen extends React.Component {
               placeholder="Password"
               password={true}
               secureTextEntry={true}
+              placeholderTextColor={colors.maroon}
               ref={(input) => { this.password = input; }}
               onSubmitEditing={() => { this.confirmPassword.focus(); }}
               />
@@ -168,6 +173,7 @@ export default class LoginScreen extends React.Component {
               onChangeText={(text) => this.setState({cpass:text})}
               placeholder="Confirm Password"
               password={true}
+              placeholderTextColor={colors.maroon}
               secureTextEntry={true}
               ref={(input) => { this.confirmPassword = input; }}
               />
@@ -189,19 +195,19 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   scrollView:{
     display: 'flex',
-    backgroundColor: '#fff'
+    backgroundColor: colors.tan
   },
   container: {
     flex: 1,
     paddingTop: 30,
-    backgroundColor: '#fff',
+    backgroundColor: colors.tan,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   },
   header: {
     paddingTop: 10,
-    color: '#333',
+    color: '#000',
     fontSize: 25,
     textDecorationLine: "underline",
     fontWeight: "bold"
