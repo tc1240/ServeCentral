@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ListView, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import * as firebase from 'firebase';
 import * as constants from '../App';
+import * as colors from '../constants/Colors'
 
 export default class EventsScreen extends React.Component {
   static navigationOptions = {
@@ -72,15 +73,15 @@ class ListItem extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: colors.default.tan,
     flex: 1,
   },
   listview: {
     flex: 1,
   },
   li: {
-    backgroundColor: '#fff',
-    borderBottomColor: '#eee',
+    backgroundColor: colors.default.orange,
+    borderBottomColor: colors.default.tan,
     borderColor: 'transparent',
     borderWidth: 1,
     paddingLeft: 16,
@@ -103,8 +104,8 @@ const styles = StyleSheet.create({
   },
   navbar: {
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderBottomColor: '#eee',
+    backgroundColor: colors.default.tan,
+    borderBottomColor: colors.default.tan,
     borderColor: 'transparent',
     borderWidth: 1,
     justifyContent: 'center',
@@ -112,12 +113,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   navbarTitle: {
-    color: '#444',
+    color: colors.default.tan,
     fontSize: 16,
     fontWeight: "500"
   },
   statusbar: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.default.tan,
     height: 22,
   },
   center: {
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   action: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.default.tan,
     borderColor: 'transparent',
     borderWidth: 1,
     paddingLeft: 16,

@@ -45,12 +45,13 @@ export default TabNavigator(
             name={iconName}
             size={28}
             style={{ marginBottom: -3, width: 25 }}
-            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+            color={focused ? Colors.orange : Colors.tan}
           />
         );
       },
     }),
     tabBarComponent: TabBarBottom,
+    tabBarOptions: {activeBackgroundColor: Colors.maroon, inactiveBackgroundColor: Colors.maroon, labelStyle: {color: Colors.tan}},
     tabBarPosition: 'bottom',
     animationEnabled: false,
     swipeEnabled: false,
