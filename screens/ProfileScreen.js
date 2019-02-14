@@ -93,7 +93,7 @@ export default class ProfileScreen extends React.Component {
           fundraiser,
           ministry,];
 
-    const sliceColor = ['#4CAF50','#800080','#FFEB3B','#FF9800','#2196F3','#F44336'];
+    const sliceColor = ['#4CAF50','purple','#ED0','#FF9800','#2196F3','#F44336'];
 
     let iconLeaf =
       Platform.OS === 'ios'
@@ -134,9 +134,7 @@ export default class ProfileScreen extends React.Component {
               sliceColor={sliceColor}
               doughnut={true} 
               coverRadius={0.45}
-              coverFill={'#FFF'}
-              onPressIn={() => Alert.alert(`onPressIn clicked ${series}`)}
-              onPressOut={() => Alert.alert(`onPressOut clicked ${series}`)}
+              coverFill={colors.tan}
           />
           <Text style={[styles.text, styles.hours]}>{this.state.profileData.serviceHours} Total Hours</Text>
           
@@ -151,7 +149,7 @@ export default class ProfileScreen extends React.Component {
               name={iconPeople}
               size={28}
               style={[styles.icon]}
-              color={'#800080'}
+              color={'purple'}
             />
             <Ionicons
               name={iconConstruct}
@@ -227,7 +225,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   email: {
-    position: 'relative',
     marginLeft: 150,
     marginTop: 60,
     fontSize: 18,
