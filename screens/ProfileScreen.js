@@ -4,6 +4,7 @@ import PieChart from 'react-native-pie-chart';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
 import { Platform } from 'react-native';
+import colors from '../constants/Colors';
 import { 
   Text, 
   View,
@@ -131,7 +132,7 @@ export default class ProfileScreen extends React.Component {
               chart_wh={chart_wh}
               series={series}
               sliceColor={sliceColor}
-              doughnut={true}
+              doughnut={true} 
               coverRadius={0.45}
               coverFill={'#FFF'}
               onPressIn={() => Alert.alert(`onPressIn clicked ${series}`)}
@@ -156,7 +157,7 @@ export default class ProfileScreen extends React.Component {
               name={iconConstruct}
               size={28}
               style={[styles.icon]}
-              color={'#FFEB3B'}
+              color={'#ED0'}
             />
             <Ionicons
               name={iconWalk}
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
     //flex is how much room this will take up, so flex 1 means that 1 is 100% of screenspace
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fff',
+    backgroundColor: colors.tan,
   },
   text:{
     position: 'absolute',
