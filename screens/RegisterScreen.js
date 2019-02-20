@@ -125,13 +125,8 @@ export default class LoginScreen extends React.Component {
            
            
         <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/icon1.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.imageStyle}
-              
+              source={require('../assets/images/icon1.png')}
+              style={styles.imageStyle}              
             />
             
             <Text style={styles.header}>Register</Text>  

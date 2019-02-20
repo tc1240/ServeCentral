@@ -48,11 +48,7 @@ state = {
         {/* Go ahead and delete ExpoLinksView and replace it with your
            * content, we just wanted to provide you with some helpful links */}
         <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/icon1.png')
-                  : require('../assets/images/robot-prod.png')
-              }
+              source={require('../assets/images/icon1.png')}
               style={styles.imageStyle}
             />      
             <Text style={styles.header}>Login</Text>    
