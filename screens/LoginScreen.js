@@ -1,9 +1,11 @@
 import React from 'react';
-import { ToastAndroid, Platform, StatusBar, ScrollView, StyleSheet, Image, View, TextInput, Text, Button, TouchableOpacity } from 'react-native';
+import { Keyboard, StyleSheet, Image, View, TextInput, Text, Button, TouchableOpacity } from 'react-native';
 import{StackNavigator} from 'react-navigation';
 import * as constants from '../App';
 import * as firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
+import colors from '../constants/Colors';
+import Toast, {DURATION} from 'react-native-easy-toast';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -11,20 +13,23 @@ export default class LoginScreen extends React.Component {
   };
   async login(username, password) {
     
+    Keyboard.dismiss();
     try {
         await firebase.auth()
             .signInWithEmailAndPassword(username, password);
 
         console.log("Logged In!");
         //Example of Toast below
-        ToastAndroid.showWithGravity("Login Successful!", ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        this.refs.toast.show('Login Successful!', 1500);
+
         Actions.main();
         // Navigate to the Home page
 
     } catch (error) {
         console.log(error.toString())
-        ToastAndroid.showWithGravity("Incorrect Username or Password", ToastAndroid.LONG, ToastAndroid.BOTTOM);
-    }
+
+        this.refs.toast.show('Incorrect Username or Password', 1500);
+      }
 
 }
 
@@ -44,17 +49,15 @@ state = {
         {/* Go ahead and delete ExpoLinksView and replace it with your
            * content, we just wanted to provide you with some helpful links */}
         <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/icon1.png')
-                  : require('../assets/images/robot-prod.png')
-              }
+              source={require('../assets/images/icon1.png')}
               style={styles.imageStyle}
             />      
             <Text style={styles.header}>Login</Text>    
             <TextInput
             style={styles.loginItems}
             placeholder="Email"
+            autoCapitalize={"none"}
+            placeholderTextColor={colors.maroon}
             onChangeText={(text) => this.setState({username: text})}
             />
             <TextInput
@@ -62,13 +65,15 @@ state = {
             placeholder="Password"
             secureTextEntry={true}
             password={true}
+            autoCapitalize={"none"}
+            placeholderTextColor={colors.maroon}
             onChangeText={(text1) => this.setState({password: text1})}
             
             />
             <Button
             title="Login"
             style={styles.loginBtn}
-            color="#a9435b"
+            color={colors.maroon}
             onPress={() => this.login(this.state.username,this.state.password)}
             />
             <TouchableOpacity 
@@ -76,6 +81,7 @@ state = {
             onPress={this.register}>
               <Text>Don't have an account? Register here!</Text>
             </TouchableOpacity>
+            <Toast ref="toast"/>
       </View>
     );
   }
@@ -85,13 +91,13 @@ state = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.tan,
     paddingTop: 45,
     alignItems: 'center'
   },
   header: {
     paddingTop: 10,
-    color: '#333',
+    color: '#000',
     fontSize: 25,
     textDecorationLine: "underline",
     fontWeight: "bold"

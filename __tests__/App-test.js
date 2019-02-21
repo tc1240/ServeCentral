@@ -12,3 +12,4 @@ it('renders the root without loading screen', async () => {
   const tree = renderer.create(<App skipLoadingScreen />).toJSON();
   expect(tree).toMatchSnapshot();
 });
+
