@@ -15,8 +15,6 @@ import {
 
 } from 'react-native';
 
-//Comment delete me please
-
 var { height } = Dimensions.get('window'); 
 var { width } = Dimensions.get('window'); 
 
