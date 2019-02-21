@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToastAndroid, Platform, StatusBar, ScrollView, StyleSheet, Image, View, TextInput, Text, Button, TouchableOpacity } from 'react-native';
+import { Keyboard, StyleSheet, Image, View, TextInput, Text, Button, TouchableOpacity } from 'react-native';
 import{StackNavigator} from 'react-navigation';
 import * as constants from '../App';
 import * as firebase from 'firebase';
@@ -13,6 +13,7 @@ export default class LoginScreen extends React.Component {
   };
   async login(username, password) {
     
+    Keyboard.dismiss();
     try {
         await firebase.auth()
             .signInWithEmailAndPassword(username, password);

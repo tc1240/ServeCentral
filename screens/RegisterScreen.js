@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity } from 'react-native';
+import { Form, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity,Keyboard } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import{StackNavigator} from 'react-navigation';
 import * as firebase from 'firebase';
@@ -24,7 +24,8 @@ export default class LoginScreen extends React.Component {
   async signup(e, pass, firstname, lastname, cpass) {
 
     try {
-
+      
+      Keyboard.dismiss();
       this.validate(e, pass, firstname, lastname, cpass);
       if(this.state.errors.length > 0){
         
