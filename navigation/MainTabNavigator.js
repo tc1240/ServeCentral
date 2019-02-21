@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
+import { createBottomTabNavigator, TabBarBottom } from 'react-navigation-tabs';
 import * as firebase from 'firebase';
 import Colors from '../constants/Colors';
 
@@ -9,7 +9,7 @@ import MapScreen from '../screens/MapScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EventsScreen from '../screens/EventsScreen';
 
-export default TabNavigator(
+export default createBottomTabNavigator(
   {
     Profile: {
       screen: ProfileScreen,
@@ -33,7 +33,7 @@ export default TabNavigator(
                 ? `ios-person${focused ? '' : '-outline'}`
                 : 'md-person';
             break;
-          case 'Map':
+          case 'Map': 
             iconName = Platform.OS === 'ios' ? `ios-globe${focused ? '' : '-outline'}` : 'md-globe';
             break;
           case 'Events':

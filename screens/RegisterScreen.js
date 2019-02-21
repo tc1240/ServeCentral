@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity } from 'react-native';
+import { Form, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity,Keyboard } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import{StackNavigator} from 'react-navigation';
 import * as firebase from 'firebase';
@@ -24,7 +24,8 @@ export default class LoginScreen extends React.Component {
   async signup(e, pass, firstname, lastname, cpass) {
 
     try {
-
+      
+      Keyboard.dismiss();
       this.validate(e, pass, firstname, lastname, cpass);
       if(this.state.errors.length > 0){
         
@@ -117,7 +118,7 @@ export default class LoginScreen extends React.Component {
     //const { navigate } = this.props.navigation;
     return (
       
-      <KeyboardAwareScrollView style={styles.scrollView}> 
+      <KeyboardAwareScrollView enableOnAndroid={true} style={styles.scrollView}> 
       <View style={styles.container}>
       
         {/* Go ahead and delete ExpoLinksView and replace it with your
@@ -125,13 +126,8 @@ export default class LoginScreen extends React.Component {
            
            
         <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/icon1.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.imageStyle}
-              
+              source={require('../assets/images/icon1.png')}
+              style={styles.imageStyle}              
             />
             
             <Text style={styles.header}>Register</Text>  

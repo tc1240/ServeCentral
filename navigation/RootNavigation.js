@@ -1,13 +1,13 @@
 import { Notifications } from 'expo';
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import * as firebase from 'firebase';
 import colors from '../constants/Colors'
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
-const RootStackNavigator = StackNavigator(
+const RootStackNavigator = createStackNavigator(
   {
     Main: {
       screen: MainTabNavigator,
