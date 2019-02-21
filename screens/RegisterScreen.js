@@ -117,7 +117,7 @@ export default class LoginScreen extends React.Component {
     //const { navigate } = this.props.navigation;
     return (
       
-      <KeyboardAwareScrollView style={styles.scrollView}> 
+      <KeyboardAwareScrollView enableOnAndroid={true} style={styles.scrollView}> 
       <View style={styles.container}>
       
         {/* Go ahead and delete ExpoLinksView and replace it with your
