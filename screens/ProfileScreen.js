@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
 import { Platform } from 'react-native';
 import colors from '../constants/Colors';
+
 import { 
   Text, 
   View,
