@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Form, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity,Keyboard } from 'react-native';
+import { Form, StyleSheet, Image, View, TextInput,Text,Button, CheckBox ,Keyboard } from 'react-native';
 import * as firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import colors from '../constants/Colors';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-export default class RegisterScreen extends React.Component {
+export default class AcctManagementScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -15,12 +15,15 @@ export default class RegisterScreen extends React.Component {
     password: '',
     firstname: '',
     lastname: '',
+    homeAddress: '',
+    receiveEmails: true,
     errors: [],
     errorsString: '',
   };
-  async signup(e, pass, firstname, lastname, cpass) {
+  async edit(e, pass, firstname, lastname, cpass) {
 
     try {
+      
       Keyboard.dismiss();
       this.validate(e, pass, firstname, lastname, cpass);
       if(this.state.errors.length > 0){
@@ -70,22 +73,10 @@ export default class RegisterScreen extends React.Component {
         this.refs.toast.show("Oops! That was an unexpected error!", 2000);
     }
   }
-  login() {
-    Actions.login()
-  }
 
   validate(email, password, firstname, lastname, cpass){
-
-    if(firstname == null){
-      this.state.errors.push("Fill out First Name. ");
-    }
-    if(lastname == null){
-      this.state.errors.push("Fill out Last Name. ");
-    }
-
-    if(password == null){
-      this.state.errors.push("Your password must be 6 characters ");
-    } else if(String(password).length < 6){
+    
+    if(String(password).length < 6){
       this.state.errors.push("Your password must be 6 characters ");
     }
     
@@ -99,13 +90,11 @@ export default class RegisterScreen extends React.Component {
       if(cpass != password){
         this.state.errors.push("Your passwords do not match. ");
       }
-    } else {
+    } else if(pass != null){
       this.state.errors.push("Please confirm your password")
     }
-
-    if(email == null){
-      this.state.errors.push("Please enter an email.");
-    } else if (!emailTest.test(String(email))){
+    
+    if (!emailTest.test(String(email))){
       this.state.errors.push("Please enter a valid email address ");
     }
   };
@@ -115,70 +104,83 @@ export default class RegisterScreen extends React.Component {
     return (
       
       <KeyboardAwareScrollView enableOnAndroid={true} style={styles.scrollView}> 
-      <View style={styles.container}>
-      
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
+      <View style={styles.container}>           
            
+           <Image
+             source={require('../assets/images/profPic.png')}
+             style={styles.imageStyle}              
+           />
            
-        <Image
-              source={require('../assets/images/icon1.png')}
-              style={styles.imageStyle}              
-            />
-            
-            <Text style={styles.header}>Register</Text>  
-              <TextInput
-              style={styles.loginItems}
-              onChangeText={(text) => this.setState({first:text})}
-              placeholder="Firstname"
-              placeholderTextColor={colors.maroon}
-              onSubmitEditing={() => { this.lastName.focus(); }}
-              />
-              <TextInput
-              style={styles.loginItems}
-              onChangeText={(text) => this.setState({last:text})}
-              placeholder="Lastname"
-              ref={(input) => { this.lastName = input; }}
-              onSubmitEditing={() => { this.email.focus(); }}
-              placeholderTextColor={colors.maroon}
-              />
-              <TextInput
-              style={styles.loginItems}
-              onChangeText={(text1) => this.setState({email:text1})}
-              placeholder="Email"
-              ref={(input) => { this.email = input; }}
-              onSubmitEditing={() => { this.password.focus(); }}
-              placeholderTextColor={colors.maroon}
-              />
-              <TextInput
-              style={styles.loginItems}
-              onChangeText={(text) => this.setState({pass:text})}
-              placeholder="Password"
-              password={true}
-              secureTextEntry={true}
-              placeholderTextColor={colors.maroon}
-              ref={(input) => { this.password = input; }}
-              onSubmitEditing={() => { this.confirmPassword.focus(); }}
-              />
-              <TextInput
-              style={styles.loginItems}
-              onChangeText={(text) => this.setState({cpass:text})}
-              placeholder="Confirm Password"
-              password={true}
-              placeholderTextColor={colors.maroon}
-              secureTextEntry={true}
-              ref={(input) => { this.confirmPassword = input; }}
-              />
-              <Button
-              title="Register"
-              style={styles.regBtn}
-              color="#a9435b"
-              onPress={() => this.signup(this.state.email,this.state.pass,this.state.first,this.state.last, this.state.cpass)}
-              />
-            <TouchableOpacity style={styles.regHere} onPress={this.login}><Text>Already have an account? Login!</Text></TouchableOpacity>
-            {/*This is needed for the toast */}
-            <Toast ref="toast"/>
-            </View>
+           <Text style={styles.header}>Account Management</Text>
+           <Text>{"\n"}</Text>
+           <Text>Change Email</Text>
+           <TextInput
+             style={styles.loginItems}
+             onChangeText={(text) => this.setState({email:text})}
+             placeholder="New Email"
+             ref={(input) => { this.email = input; }}
+             onSubmitEditing={() => { this.firstName.focus(); }}
+             placeholderTextColor={colors.maroon}
+           /> 
+           <Text>{"\n"}</Text>
+           <Text>Change Display Name</Text>
+           <TextInput
+             style={styles.loginItems}
+             onChangeText={(text) => this.setState({first:text})}
+             placeholder="New Firstname"
+             ref={(input) => { this.firstName = input; }}
+             placeholderTextColor={colors.maroon}
+             onSubmitEditing={() => { this.lastName.focus(); }}
+           />
+           <TextInput
+             style={styles.loginItems}
+             onChangeText={(text) => this.setState({last:text})}
+             placeholder="New Lastname"
+             ref={(input) => { this.lastName = input; }}
+             onSubmitEditing={() => { this.password.focus(); }}
+             placeholderTextColor={colors.maroon}
+           />
+           <Text>{"\n"}</Text>
+           <Text>Change Password</Text>
+           <TextInput
+             style={styles.loginItems}
+             onChangeText={(text) => this.setState({pass:text})}
+             placeholder="New Password"
+             password={true}
+             secureTextEntry={true}
+             placeholderTextColor={colors.maroon}
+             ref={(input) => { this.password = input; }}
+             onSubmitEditing={() => { this.confirmPassword.focus(); }}
+           />
+           <TextInput
+             style={styles.loginItems}
+             onChangeText={(text) => this.setState({cpass:text})}
+             placeholder="Confirm New Password"
+             password={true}
+             placeholderTextColor={colors.maroon}
+             secureTextEntry={true}
+             ref={(input) => { this.confirmPassword = input; }}
+             onSubmitEditing={() => { this.homeAddress.focus(); }}
+           />
+           <Text>{"\n"}</Text>
+           <Text>Change Home Location</Text>
+           <TextInput
+             style={styles.loginItems}
+             onChangeText={(text) => this.setState({hloc:text})}
+             placeholder="New Home Location"
+             placeholderTextColor={colors.maroon}
+             ref={(input) => { this.homeAddress = input; }}
+           />
+           <Text>{"\n"}</Text>
+           <Button
+             title="Confirm Changes"
+             style={styles.regBtn}
+             color="#a9435b"
+             onPress={() => this.edit(this.state.email,this.state.pass,this.state.first,this.state.last, this.state.cpass, this.state.homeAddress, this.state.receiveEmails)}
+           />
+           <Text>{"\n"}</Text>
+           <Toast ref="toast"/>
+           </View>
       </KeyboardAwareScrollView>
     );
   }

@@ -3,9 +3,9 @@ import * as constants from '../App';
 import PieChart from 'react-native-pie-chart';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
-import { Platform } from 'react-native';
+import { Platform, Button } from 'react-native';
 import colors from '../constants/Colors';
-
+import { Actions } from 'react-native-router-flux';
 import { 
   Text, 
   View,
@@ -64,6 +64,10 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
+  acctmanagement() {
+    Actions.acctmanagement();
+  }
+  
   render() {
 
     const chart_wh = 210;
@@ -123,6 +127,12 @@ export default class ProfileScreen extends React.Component {
     return (
       //NEEDS TO BE AN ON CLICK GET EVENT AND DISPLAY EVENT GOTTEN ON EVENT INFO
       <View style={styles.container}>
+        <Button
+          title="Edit"
+          style={styles.regBtn}
+          color={colors.maroon}
+          onPress={this.acctmanagement}
+        />
         <View style={[styles.top]}>
           <Image source={require('../assets/images/profPic.png')} style={styles.profPic} /> 
           <Text style={[styles.text, styles.username]}>{this.state.profileData.name}</Text>
