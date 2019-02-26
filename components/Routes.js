@@ -12,9 +12,9 @@ export default class Routes extends React.Component {
         return(
             <Router>
                 <Stack key="root" hideNavBar={true}>
-                    <Scene key="login" component={LoginScreen} />
+                    <Scene key="login" component={LoginScreen} initial={true}/>
                     <Scene key="register" component={RegisterScreen}/>
-                    <Scene key="acctmanagement" component={AcctManagementScreen}initial={true}/>
+                    <Scene key="acctmanagement" component={AcctManagementScreen}/>
                     {/* Main Tab Navigation is the bottom bar navigation */}
                     <Scene key="main" component={RootNavigation}/>
                 </Stack>
