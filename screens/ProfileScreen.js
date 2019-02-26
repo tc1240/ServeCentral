@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import * as constants from '../App';
 import PieChart from 'react-native-pie-chart';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,7 +13,8 @@ import {
   ScrollView, 
   StyleSheet,
   Dimensions,
-
+  ListView,
+  TouchableHighlight,
 } from 'react-native';
 
 var { height } = Dimensions.get('window'); 
@@ -38,10 +39,18 @@ export default class ProfileScreen extends React.Component {
   
   constructor(props) {
     super(props);
+
     this.profileRef = constants.firebaseApp.database().ref('Users/'+this.getUser());
+    this.eventsRef = constants.firebaseApp.database().ref('Events');
+    
+    const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+
+    
     this.state = {
-      profileData: ''
+      profileData: '',
+      dataSource: dataSource,
     }
+
     this.profileRef.once('value', (snap) => {
 
       user = {
@@ -64,9 +73,29 @@ export default class ProfileScreen extends React.Component {
     });
   }
 
+  componentDidMount(){
+    this.listenForEvents(this.eventsRef);
+  }
+
+  listenForEvents(eventsRef) {
+    eventsRef.on('value', (snap) => {
+      var events = [];
+      snap.forEach((child) => {
+        events.push({
+          event: child.val(),
+          _key: child.key
+        });
+      });
+
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(events)
+      });
+    });
+  }
+
   render() {
 
-    const chart_wh = 210;
+    const chart_wh = 190;
     //sizes of slices
 
     var environmental = 0; 
@@ -122,75 +151,112 @@ export default class ProfileScreen extends React.Component {
         : 'md-bookmarks'; 
     return (
       //NEEDS TO BE AN ON CLICK GET EVENT AND DISPLAY EVENT GOTTEN ON EVENT INFO
-      <View style={styles.container}>
-        <View style={[styles.top]}>
-          <Image source={require('../assets/images/profPic.png')} style={styles.profPic} /> 
-          <Text style={[styles.text, styles.username]}>{this.state.profileData.name}</Text>
-          <Text style={[styles.text, styles.email]}>{this.state.profileData.email}</Text>
-        </View>
-        <View style={[styles.mid]}>
-          <PieChart style={styles.pieChart}
-              chart_wh={chart_wh}
-              series={series}
-              sliceColor={sliceColor}
-              doughnut={true} 
-              coverRadius={0.45}
-              coverFill={colors.tan}
-          />
-          <Text style={[styles.text, styles.hours]}>{this.state.profileData.serviceHours} Total Hours</Text>
-          
-          <View style={styles.legend}>
-            <Ionicons
-              name={iconLeaf}
-              size={28}
-              style={[styles.icon]}
-              color={'#4CAF50'}
-            />
-            <Ionicons
-              name={iconPeople}
-              size={28}
-              style={[styles.icon]}
-              color={'purple'}
-            />
-            <Ionicons
-              name={iconConstruct}
-              size={28}
-              style={[styles.icon]}
-              color={'#ED0'}
-            />
-            <Ionicons
-              name={iconWalk}
-              size={28}
-              style={[styles.icon]}
-              color={'#FF9800'}
-            />
-            <Ionicons
-              name={iconCash}
-              size={28}
-              style={[styles.icon]}
-              color={'#2196F3'}
-            />
-            <Ionicons
-              name={iconBible}
-              size={28}
-              style={[styles.icon]}
-              color={'#F44336'}
-            />
-          </View>
-          <View style={[styles.legend, styles.legendWords]}>
-            <Text style={[styles.Text, styles.legendText]}>Environmental</Text>
-            <Text style={[styles.Text, styles.legendText]}>Social Support</Text>
-            <Text style={[styles.Text, styles.legendText]}>Construction</Text>
-            <Text style={[styles.Text, styles.legendText]}>Walk-A-Thon</Text>
-            <Text style={[styles.Text, styles.legendText]}>Fundraiser</Text>
-            <Text style={[styles.Text, styles.legendText]}>Ministry</Text>
+      <ScrollView style={styles.container}>
+
+        <View style={{borderBottomWidth: 1}}>
+          <View style={[styles.ProfileInfoSection]}>
+            <Image source={require('../assets/images/profPic.png')} style={styles.profPic} /> 
+            <View style={[styles.userInformation]}>
+              <Text style={[styles.text, styles.username]}>{this.state.profileData.name}</Text>
+              <Text style={[styles.text, styles.email]}>{this.state.profileData.email}</Text>
+            </View>
+            <Image source={require('../assets/images/settingWheel.png')} style={styles.setting} />
           </View>
         </View>
-        <View style={[styles.bot]}>
-          <Text style={[styles.history]}>History</Text>
+
+
+        <View style={{borderBottomWidth: 1}}>
+          <View style={[styles.PieChartSection]}>
+            <PieChart style={styles.pieChart}
+                chart_wh={chart_wh}
+                series={series}
+                sliceColor={sliceColor}
+                doughnut={true} 
+                coverRadius={0.45}
+                coverFill={colors.tan}
+              />
+
+            <View style={styles.legend}>
+              <Ionicons
+                name={iconLeaf}
+                size={28}
+                style={[styles.icon]}
+                color={'#4CAF50'}
+              >Environmental</Ionicons>
+              <Ionicons
+                name={iconPeople}
+                size={28}
+                style={[styles.icon]}
+                color={'purple'}
+              >Social Support</Ionicons>
+              <Ionicons
+                name={iconConstruct}
+                size={28}
+                style={[styles.icon]}
+                color={'#ED0'}
+              >Construction</Ionicons>
+              <Ionicons
+                name={iconWalk}
+                size={28}
+                style={[styles.icon]}
+                color={'#FF9800'}
+              >Walk-A-Thon</Ionicons>
+              <Ionicons
+                name={iconCash}
+                size={28}
+                style={[styles.icon]}
+                color={'#2196F3'}
+              >Fundraiser</Ionicons>
+              <Ionicons
+                name={iconBible}
+                size={28}
+                style={[styles.icon]}
+                color={'#F44336'}
+              >Ministry</Ionicons>
+            </View>
+          </View>
         </View>
-      </View>
+
+        <View style={{borderBottomWidth: 1}}>
+          <View style={[styles.HistorySection]}>
+            <Text style={[styles.historyHead]}>History ></Text>
+            <ListView dataSource={this.state.dataSource}
+                  renderRow={this._renderItem.bind(this)}
+                  style={styles.container} />
+          </View>
+        </View>
+      
+        <View style={{borderBottomWidth: 1}}>
+          <View style={[styles.achievementSection]}>
+            <Text style={[styles.achievementHead]}>Achievements ></Text>
+          </View>
+
+        </View>
+
+      </ScrollView>
     
+    );
+  }
+
+  _renderItem(event) {
+    const onPress = () => {
+      console.log('Pressed');
+    };
+
+    return (<ListItem event={event} />);
+  }
+}
+
+
+class ListItem extends Component {      
+  render() {
+    return (
+      <TouchableHighlight onPress={this.props.onPress}>
+        <View style={styles.li}>
+          <Text style={styles.liText}>{this.props.event.event.Name}</Text>
+          <Text style={styles.asideText}>{this.props.event.event.Date}</Text>
+        </View>
+      </TouchableHighlight>
     );
   }
 }
@@ -202,75 +268,112 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: colors.tan,
   },
-  text:{
-    position: 'absolute',
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
   // Top
-  top: {
+  ProfileInfoSection: {
     // top is 30% of screen
-    flex: .30,
-    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 15,
+    marginBottom: 15,
   },
   profPic: {
-    position: 'absolute',
-    marginTop: 15,
-    marginLeft: 15,
     width: 125,
     height: 125,
   },
+  userInformation: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   username: {
-    marginLeft: 150,
-    marginTop: 30,
     fontSize: 25,
+    flex: 1,
   },
   email: {
-    marginLeft: 150,
-    marginTop: 60,
     fontSize: 18,
+    flex: 2,
   },
+  setting: {
+    width: 25,
+    height: 25,
+  },
+
+
   // Middle
-  mid: {
+  PieChartSection: {
     // mid is 60%
-    flex: .60,
-    borderBottomWidth: 1,
+    flex: 1,
+    margin: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   pieChart: {
-    marginLeft: 15,
-    marginTop: 70,
-  },
-  hours: {
-    marginLeft: 76,
-    marginTop: 152,
-    width: 85,
-    textAlign: 'center',
+    flex: 1.5,
   },
   legend: {
-    position: 'absolute',
-    marginLeft: 235,
-    marginTop: 93,
+    flex: 1,
   },
-  legendWords: {
-    marginLeft: 262,
-    marginTop: 98,
-  },
-  legendText: {
-    fontSize: 14,
+  icon: {
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 9,
+    marginBottom: 5,
+
   },
+
+
   // Bottom
-  bot: {
+  HistorySection: {
     // bottom is 10%
-    flex: .10,
+    flex: 1,
+    flexDirection: 'column',
+    margin:10,
   },
-  history: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginLeft: 130,
-    marginTop: 10,
+  historyHead: {
+    fontSize: 30,
+    color: colors.maroon,
   },
+  container: {
+    backgroundColor: colors.tan,
+    flex: 1,
+  },  
+  li: {
+    backgroundColor: colors.orange,
+    borderBottomColor: colors.tan,
+    borderColor: 'transparent',
+    borderWidth: 1,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 14,
+    paddingBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  liContainer: {
+    flex: 2,
+  },
+  liText: {
+    color: '#333',
+    fontSize: 16,
+  },
+  asideText: {
+    color: '#333',
+    fontSize: 16,
+  },
+
+
+  //Achievements
+  achievementSection: {
+    flex: 1,
+    flexDirection: 'column',
+    margin:10,
+  },
+  achievementHead: {
+    fontSize: 30,
+    color: colors.maroon,
+  },
+
   
 });
 
