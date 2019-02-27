@@ -13,20 +13,18 @@ export default class AcctManagementScreen extends React.Component {
   state = {
     email: '',
     password: '',
-    firstname: '',
-    lastname: '',
+    fullname: '',
     homeloc: '',
     errors: [],
     errorsString: '',
   };
-  async edit(e, pass, firstname, lastname, cpass, homeloc) {
+  async edit(e, pass, fullname, cpass, homeloc) {
 
     try {
-      
       Keyboard.dismiss();
 
       // Validates the fields by returning an error if failed
-      this.validate(e, pass, firstname, lastname, cpass, homeloc);
+      this.validate(e, pass, fullname, cpass, homeloc);
       
       // Error stuff
       if(this.state.errors.length > 0){
@@ -60,11 +58,11 @@ export default class AcctManagementScreen extends React.Component {
           }
         )
       }
-      if((firstname && lastname) != null){
-        //user.updateProfile(firstname + " " + lastname)
+      if(fullname != ''){
+        //user.updateProfile(fullname)
         firebase.database().ref('Users/'+user.uid).update(
           {
-            name: firstname + " " + lastname,
+            name: fullname,
           }
         )
       }
@@ -91,7 +89,7 @@ export default class AcctManagementScreen extends React.Component {
   }
 
   // Makes sure all fields entered meet the requirements for the specified field
-  validate(email, password, firstname, lastname, cpass, homeloc){
+  validate(email, password, fullname, cpass, homeloc){
     // If a new password was attempted
     if(password != null){
       // Password checks:
@@ -103,11 +101,11 @@ export default class AcctManagementScreen extends React.Component {
         this.state.errors.push("Your password must contain a number ");
       }
 
-      if(cpass != null){
+      if(cpass != ''){
         if(cpass != password){
           this.state.errors.push("Your passwords do not match. ");
         }
-      } else if(password != null){
+      } else if(password != ''){
         this.state.errors.push("Please confirm your password")
       }
     }
@@ -121,18 +119,16 @@ export default class AcctManagementScreen extends React.Component {
     }
 
     // If first name is entered the last must be entered too    
-    if(firstname == ''){
-      firstname = null
-    }
-    if(((firstname != null) && (lastname == null)) || ((firstname == null) &&  (lastname != null))){
-      this.state.errors.push("Please enter both first name and last name ")
+    if(fullname == ''){
+      // check for space for first and last
     }
 
     // If home location is entered make sure it is a valid address
+    console.log("Homeloc equals: "+homeloc+" :")
     if(homeloc != ''){
       var addressTest = /^\s*\S+(?:\s+\S+){2}/
       if(!addressTest.test(String(homeloc))){
-        this.state.errors.push("Please enter a valid address")
+        this.state.errors.push("Please enter a valid home address")
       }
     }
   };
@@ -159,26 +155,18 @@ export default class AcctManagementScreen extends React.Component {
              placeholder="New Email"
              autoCapitalize={"none"}
              ref={(input) => { this.email = input; }}
-             onSubmitEditing={() => { this.firstName.focus(); }}
+             onSubmitEditing={() => { this.fullname.focus(); }}
              placeholderTextColor={colors.maroon}
            /> 
            <Text>{"\n"}</Text>
            <Text>Change Display Name</Text>
            <TextInput
              style={styles.updateItems}
-             onChangeText={(text) => this.setState({first:text})}
-             placeholder="New Firstname"
-             ref={(input) => { this.firstName = input; }}
+             onChangeText={(text) => this.setState({fullname:text})}
+             placeholder="New Full Name"
+             ref={(input) => { this.fullname = input; }}
              placeholderTextColor={colors.maroon}
-             onSubmitEditing={() => { this.lastName.focus(); }}
-           />
-           <TextInput
-             style={styles.updateItems}
-             onChangeText={(text) => this.setState({last:text})}
-             placeholder="New Lastname"
-             ref={(input) => { this.lastName = input; }}
              onSubmitEditing={() => { this.password.focus(); }}
-             placeholderTextColor={colors.maroon}
            />
            <Text>{"\n"}</Text>
            <Text>Change Password</Text>
@@ -208,7 +196,7 @@ export default class AcctManagementScreen extends React.Component {
            <Text>Change Home Location</Text>
            <TextInput
              style={styles.updateItems}
-             onChangeText={(text) => this.setState({hloc:text})}
+             onChangeText={(text) => this.setState({homeloc:text.trim()})}
              placeholder="New Home Location"
              placeholderTextColor={colors.maroon}
              ref={(input) => { this.homeloc = input; }}
@@ -218,7 +206,7 @@ export default class AcctManagementScreen extends React.Component {
              title="Confirm Changes"
              style={styles.regBtn}
              color="#a9435b"
-             onPress={() => this.edit(this.state.email,this.state.pass,this.state.first,this.state.last, this.state.cpass, this.state.homeloc)}
+             onPress={() => this.edit(this.state.email,this.state.pass,this.state.fullname, this.state.cpass, this.state.homeloc)}
            />
            <Text>{"\n"}</Text>
            <Toast ref="toast"/>
