@@ -8,8 +8,9 @@ import MapView from 'react-native-maps';
 import * as firebase from 'firebase';
 import Login from './screens/LoginScreen';
 import Routes from './components/Routes';
+import colors from './constants/Colors';
 
-// Initialize Firebase
+// Initialize Firebase This is changed
 const firebaseConfig = {
   apiKey: "AIzaSyAHhF5RU-ODqvW4Sm8YxRo4d18Mys_x1qc",
   authDomain: "https://binthr-1508505021265.firebaseapp.com",
@@ -77,10 +78,10 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   nav: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#EC8',
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#EC8',
   },
 });

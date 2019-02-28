@@ -3,6 +3,7 @@ import * as constants from '../App';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
 import { Platform } from 'react-native';
+import colors from '../constants/Colors';
 import { 
   Text, 
   View,
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     //flex is how much room this will take up, so flex 1 means that 1 is 100% of screenspace
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fff',
+    backgroundColor: '#EC8',
   },
   text:{
     position: 'absolute',
