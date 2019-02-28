@@ -41,14 +41,18 @@ export default class ProfileScreen extends React.Component {
     super(props);
 
     this.profileRef = constants.firebaseApp.database().ref('Users/'+this.getUser());
+    this.historyRef = constants.firebaseApp.database().ref('Users/'+this.getUser()+'/history');
+    this.achieveRef = constants.firebaseApp.database().ref('Users/'+this.getUser()+'/achievements');
     this.eventsRef = constants.firebaseApp.database().ref('Events');
+    this.allAchieveRef = constants.firebaseApp.database().ref('Achievements');
     
     const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-
+    const dataSource2 = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     
     this.state = {
       profileData: '',
       dataSource: dataSource,
+      dataSource2: dataSource2,
     }
 
     this.profileRef.once('value', (snap) => {
@@ -68,30 +72,62 @@ export default class ProfileScreen extends React.Component {
       this.setState({
         profileData: user
       });
-
-      console.log(this.state.profileData);
     });
   }
 
   componentDidMount(){
-    this.listenForEvents(this.eventsRef);
+    this.listenForEvents(this.historyRef);
+    this.listenForAchievements(this.achieveRef);
   }
 
   listenForEvents(eventsRef) {
     eventsRef.on('value', (snap) => {
-      var events = [];
+
       snap.forEach((child) => {
-        events.push({
-          event: child.val(),
-          _key: child.key
+        var eventVariableRef = this.eventsRef.child(child.val())
+        var eventNameVariable;
+        var eventDateVariable;
+        eventVariableRef.once('value').then((snapshot) => {
+          eventNameVariable = snapshot.child("Name").val()
+          eventDateVariable = snapshot.child("Date").val()
+          var events = [];
+            
+          events.push({
+            event: eventNameVariable,
+            _key: child.key,
+            date: eventDateVariable,
+          });
+          
+          this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(events)
+          });
         });
       });
+    });
+  };
 
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(events)
+  listenForAchievements(allAchieveRef) {
+    allAchieveRef.on('value', (snap) => {
+
+      snap.forEach((child) => {
+        var achieveVariableRef = this.allAchieveRef.child(child.val())
+        var achieveNameVariable;
+        achieveVariableRef.once('value').then((snapshot) => {
+          achieveNameVariable = snapshot.val()
+          var achievements = [];
+
+          achievements.push({
+            achievement: achieveNameVariable,
+            _key: child.key,
+          });
+          
+          this.setState({
+            dataSource2: this.state.dataSource2.cloneWithRows(achievements)
+          });
+        });
       });
     });
-  }
+  };
 
   render() {
 
@@ -175,7 +211,7 @@ export default class ProfileScreen extends React.Component {
                 coverRadius={0.45}
                 coverFill={colors.tan}
               />
-
+            
             <View style={styles.legend}>
               <Ionicons
                 name={iconLeaf}
@@ -229,6 +265,9 @@ export default class ProfileScreen extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.achievementSection]}>
             <Text style={[styles.achievementHead]}>Achievements ></Text>
+            <ListView dataSource={this.state.dataSource2}
+                  renderRow={this._renderItem2.bind(this)}
+                  style={styles.container} />
           </View>
 
         </View>
@@ -245,6 +284,14 @@ export default class ProfileScreen extends React.Component {
 
     return (<ListItem event={event} />);
   }
+
+  _renderItem2(achievements) {
+    const onPress = () => {
+      console.log('Pressed');
+    };
+
+    return (<ListItem2 achievements={achievements} />);
+  }
 }
 
 
@@ -253,8 +300,20 @@ class ListItem extends Component {
     return (
       <TouchableHighlight onPress={this.props.onPress}>
         <View style={styles.li}>
-          <Text style={styles.liText}>{this.props.event.event.Name}</Text>
-          <Text style={styles.asideText}>{this.props.event.event.Date}</Text>
+          <Text style={styles.liText}>{this.props.event.event}</Text>
+          <Text style={styles.asideText}>{this.props.event.date}</Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+}
+
+class ListItem2 extends Component {      
+  render() {
+    return (
+      <TouchableHighlight onPress={this.props.onPress}>
+        <View style={styles.li}>
+          <Text style={styles.liText}>{this.props.achievements.achievement}</Text>
         </View>
       </TouchableHighlight>
     );
