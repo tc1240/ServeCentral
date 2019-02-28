@@ -3,9 +3,9 @@ import * as constants from '../App';
 import PieChart from 'react-native-pie-chart';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
-import { Platform } from 'react-native';
+import { Platform, Button } from 'react-native';
 import colors from '../constants/Colors';
-
+import { Actions } from 'react-native-router-flux';
 import { 
   Text, 
   View,
@@ -129,6 +129,10 @@ export default class ProfileScreen extends React.Component {
     });
   };
 
+  acctmanagement() {
+    Actions.acctmanagement();
+  }
+ 
   render() {
 
     const chart_wh = 190;
