@@ -31,12 +31,12 @@ export default class LoginScreen extends React.Component {
         this.refs.toast.show('Incorrect Username or Password', 1500);
       }
 
-}
+  }
 
-state = {
-  username: '',
-  password: ''
-}
+  state = {
+    username: '',
+    password: ''
+  }
   
   register() {
     Actions.register()

@@ -9,6 +9,8 @@ import MapScreen from '../screens/MapScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EventsScreen from '../screens/EventsScreen';
 
+// *** HUGE NOTE: In order to add new screens go to components/routes and import the screen and create a scene ***
+//  However here is the right place to add a new button to the nav bar
 export default createBottomTabNavigator(
   {
     Profile: {
