@@ -124,7 +124,7 @@ export default class ProfileScreen extends React.Component {
           });
 
           if(achievements.length > 3){
-            achievements.sshift();
+            achievements.shift();
           }
           
           this.setState({
