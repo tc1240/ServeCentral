@@ -1,32 +1,29 @@
 import React, { Component } from 'react';
 import { Form, StyleSheet, Image, View, TextInput,Text,Button,TouchableOpacity,Keyboard } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
-import{StackNavigator} from 'react-navigation';
 import * as firebase from 'firebase';
-import * as constants from '../App';
 import {Actions} from 'react-native-router-flux';
 import colors from '../constants/Colors';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-export default class LoginScreen extends React.Component {
+export default class RegisterScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
   state = {
     email: '',
+    homeloc: '',
     password: '',
     firstname: '',
     lastname: '',
     errors: [],
     errorsString: '',
   };
-  async signup(e, pass, firstname, lastname, cpass) {
+  async signup(e, pass, firstname, lastname, cpass, homeloc) {
 
     try {
-      
       Keyboard.dismiss();
-      this.validate(e, pass, firstname, lastname, cpass);
+      this.validate(e, pass, firstname, lastname, cpass, homeloc);
       if(this.state.errors.length > 0){
         
         console.log(this.state.errors);
@@ -52,6 +49,7 @@ export default class LoginScreen extends React.Component {
         {
           email: e,
           name: firstname + " " + lastname,
+          homeloc: homeloc,
           serviceHours: 0,
           tags: {
             environmental: 0,
@@ -60,6 +58,12 @@ export default class LoginScreen extends React.Component {
             walk:0,
             fundraiser:0,
             ministry:0,
+          },
+          history: {
+            event001: '0001',
+          },
+          achievements: {
+            ach001: '0001',
           }
         }
       )
@@ -78,7 +82,7 @@ export default class LoginScreen extends React.Component {
     Actions.login()
   }
 
-  validate(email, password, firstname, lastname, cpass){
+  validate(email, password, firstname, lastname, cpass, homeloc){
 
     if(firstname == null){
       this.state.errors.push("Fill out First Name. ");
@@ -87,10 +91,14 @@ export default class LoginScreen extends React.Component {
       this.state.errors.push("Fill out Last Name. ");
     }
 
+    if(homeloc == null){
+      this.state.errors.push("Fill out Home Location. ");
+    }
+
     if(password == null){
-      this.state.errors.push("Your password must be 6 characters ");
+      this.state.errors.push("Please enter a password ");
     } else if(String(password).length < 6){
-      this.state.errors.push("Your password must be 6 characters ");
+      this.state.errors.push("Your password must be at least 6 characters ");
     }
     
     var hasNumber = /\d/;
@@ -118,7 +126,7 @@ export default class LoginScreen extends React.Component {
     //const { navigate } = this.props.navigation;
     return (
       
-      <KeyboardAwareScrollView enableOnAndroid={true} style={styles.scrollView}> 
+      <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={200} style={styles.scrollView}> 
       <View style={styles.container}>
       
         {/* Go ahead and delete ExpoLinksView and replace it with your
@@ -143,6 +151,14 @@ export default class LoginScreen extends React.Component {
               onChangeText={(text) => this.setState({last:text})}
               placeholder="Lastname"
               ref={(input) => { this.lastName = input; }}
+              onSubmitEditing={() => { this.homeloc.focus(); }}
+              placeholderTextColor={colors.maroon}
+              />
+              <TextInput
+              style={styles.loginItems}
+              onChangeText={(text) => this.setState({homeloc:text})}
+              placeholder="Home Location (for relevant events)"
+              ref={(input) => { this.homeloc = input; }}
               onSubmitEditing={() => { this.email.focus(); }}
               placeholderTextColor={colors.maroon}
               />
@@ -150,6 +166,7 @@ export default class LoginScreen extends React.Component {
               style={styles.loginItems}
               onChangeText={(text1) => this.setState({email:text1})}
               placeholder="Email"
+              autoCapitalize={"none"}
               ref={(input) => { this.email = input; }}
               onSubmitEditing={() => { this.password.focus(); }}
               placeholderTextColor={colors.maroon}
@@ -158,6 +175,7 @@ export default class LoginScreen extends React.Component {
               style={styles.loginItems}
               onChangeText={(text) => this.setState({pass:text})}
               placeholder="Password"
+              autoCapitalize={"none"}
               password={true}
               secureTextEntry={true}
               placeholderTextColor={colors.maroon}
@@ -168,6 +186,7 @@ export default class LoginScreen extends React.Component {
               style={styles.loginItems}
               onChangeText={(text) => this.setState({cpass:text})}
               placeholder="Confirm Password"
+              autoCapitalize={"none"}
               password={true}
               placeholderTextColor={colors.maroon}
               secureTextEntry={true}
@@ -177,7 +196,7 @@ export default class LoginScreen extends React.Component {
               title="Register"
               style={styles.regBtn}
               color="#a9435b"
-              onPress={() => this.signup(this.state.email,this.state.pass,this.state.first,this.state.last, this.state.cpass)}
+              onPress={() => this.signup(this.state.email,this.state.pass,this.state.first,this.state.last, this.state.cpass, this.state.homeloc)}
               />
             <TouchableOpacity style={styles.regHere} onPress={this.login}><Text>Already have an account? Login!</Text></TouchableOpacity>
             {/*This is needed for the toast */}

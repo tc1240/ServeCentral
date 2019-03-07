@@ -3,9 +3,9 @@ import * as constants from '../App';
 import PieChart from 'react-native-pie-chart';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
-import { Platform } from 'react-native';
+import { Platform, Button } from 'react-native';
 import colors from '../constants/Colors';
-
+import { Actions } from 'react-native-router-flux';
 import { 
   Text, 
   View,
@@ -135,6 +135,10 @@ export default class ProfileScreen extends React.Component {
     });
   };
 
+  acctmanagement() {
+    Actions.acctmanagement();
+  }
+ 
   render() {
 
     const chart_wh = 190;
@@ -202,7 +206,9 @@ export default class ProfileScreen extends React.Component {
               <Text style={[styles.text, styles.username]}>{this.state.profileData.name}</Text>
               <Text style={[styles.text, styles.email]}>{this.state.profileData.email}</Text>
             </View>
-            <Image source={require('../assets/images/settingWheel.png')} style={styles.setting} />
+            <TouchableHighlight onPress={() => Actions.acctmanagement()}>
+              <Image source={require('../assets/images/settingWheel.png')} style={styles.setting}/>
+            </TouchableHighlight>
           </View>
         </View>
 
@@ -261,7 +267,9 @@ export default class ProfileScreen extends React.Component {
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <Text style={[styles.historyHead]}>History ></Text>
+            <TouchableHighlight onPress={() => Actions.profhistory()}>
+              <Text style={[styles.historyHead]}>History ></Text>             
+            </TouchableHighlight>
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
                   style={styles.container} />
@@ -270,7 +278,9 @@ export default class ProfileScreen extends React.Component {
       
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.achievementSection]}>
-            <Text style={[styles.achievementHead]}>Achievements ></Text>
+            <TouchableHighlight onPress={() => Actions.profachievment()}>
+              <Text style={[styles.achievementHead]}>Achievements ></Text>              
+            </TouchableHighlight>
             <ListView dataSource={this.state.dataSource2}
                   renderRow={this._renderItem2.bind(this)}
                   style={styles.container} />
