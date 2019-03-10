@@ -21,6 +21,7 @@ const RootStackNavigator = createStackNavigator(
         backgroundColor: colors.maroon,
         color: colors.tan,
       },
+      title: ""
     }),
   }
 );
