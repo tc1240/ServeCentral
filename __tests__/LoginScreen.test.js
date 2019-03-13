@@ -1,47 +1,20 @@
-/* The correct login information is as follows:
-Username: dev@dev.com
-password: meme
+/* The issue right now lies in mock functions
+and Jest incessantly refusing to mock console.log 
 
-The wrong login information is as follows:
-Username: wrongEmail@wrong.com
-password: meme
+I believe that testing the console.log is the easiest way
+to confirm if something works or not, e.g. after a successful
+login, console.log displays "Logged In!" */
 
-This rough code draft is being pushed, despite Jest being uncooperative.
-Consider this a rough outline of possible tests.
-*/
+import LoginScreen from "../screens/LoginScreen";
+jest.mock("../screens/LoginScreen");
+jest.mock(global.console.log);
+
+beforeEach(() => {
+    LoginScreen.mockClear();
+});
 
 test('login is successful with correct username and password', () => {
-    expect(login("dev@dev.com","password")).not.toThrow(error);
-});
-
-test('login fails with correct username and wrong password', () => {
-    expect(login("dev@dev.com","meme")).toThrow(error);
-});
-
-test('login fails with correct username and missing password', () => {
-    expect(login("dev@dev.com","")).toThrow(error);
-});
-
-test('login fails with wrong username and correct password', () => {
-    expect(login("wrongEmail@wrong.com","password")).toThrow(error);
-});
-
-test('login fails with wrong username and wrong password', () => {
-    expect(login("wrongEmail@wrong.com","meme")).toThrow(error);
-});
-
-test('login fails with wrong username and missing password', () => {
-    expect(login("wrongEmail@wrong.com","")).toThrow(error);
-});
-
-test('login fails with missing username and correct password', () => {
-    expect(login("","password")).toThrow(error);
-});
-
-test('login fails with missing username and wrong password', () => {
-    expect(login("","meme")).toThrow(error);
-});
-
-test('login fails with missing username and missing password', () => {
-    expect(login("","")).toThrow(error);
+    const myLoginScreen = new LoginScreen();
+    myLoginScreen.login("test@test.com","password1");
+    expect(global.console.log).toBeCalledWith("Logged In!");
 });
