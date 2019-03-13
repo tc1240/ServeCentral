@@ -8,7 +8,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export default class AcctManagementScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    title: '',
+    headerStyle: {
+      backgroundColor: colors.maroon
+    }
   };
   state = {
     email: '',

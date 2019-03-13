@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
-import { View, ListView, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, ListView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as firebase from 'firebase';
 import * as constants from '../App';
 import * as colors from '../constants/Colors'
+import { Actions } from 'react-native-router-flux';
 
 export default class EventsScreen extends React.Component {
   static navigationOptions = {
     title: 'Events',
+    headerTitleStyle: {
+      fontWeight: 'normal',
+      backgroundColor: colors.maroon,
+      color: colors.tan,
+    },
+    headerStyle: {
+      backgroundColor: colors.maroon
+    }
   };
 
   constructor(props) {
@@ -55,17 +64,24 @@ export default class EventsScreen extends React.Component {
 
     return (<ListItem event={event} />);
   }
+
 }
 
-class ListItem extends Component {      
+class ListItem extends Component {    
+
+  onEventPress(event){
+    //Gets event clicked and passes it to eventinfo. It can be recieved on eventInfo using this.props.event.event
+    Actions.eventinfo({event: event})
+  }
+
   render() {
     return (
-      <TouchableHighlight onPress={this.props.onPress}>
+      <TouchableOpacity onPress={() => this.onEventPress(this.props.event)}>
         <View style={styles.li}>
-          <Text style={styles.liText}>{this.props.event.event.Name}</Text>
-          <Text style={styles.asideText}>{this.props.event.event.Date}</Text>
+            <Text style={styles.liText}>{this.props.event.event.Name}</Text>
+            <Text style={styles.asideText}>{this.props.event.event.Date}</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 }
