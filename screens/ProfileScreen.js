@@ -22,7 +22,7 @@ var { width } = Dimensions.get('window');
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
-    title: 'Profile',
+    title: 'Profile'
   };
   getUser(){
     try{
@@ -366,7 +366,6 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
   },
-
 
   // Middle
   PieChartSection: {
