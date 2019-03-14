@@ -82,6 +82,7 @@ export default class ProfileScreen extends React.Component {
 
   listenForEvents(eventsRef) {
     eventsRef.on('value', (snap) => {
+      var events =new Array();
 
       snap.forEach((child) => {
         var eventVariableRef = this.eventsRef.child(child.val())
@@ -90,13 +91,15 @@ export default class ProfileScreen extends React.Component {
         eventVariableRef.once('value').then((snapshot) => {
           eventNameVariable = snapshot.child("Name").val()
           eventDateVariable = snapshot.child("Date").val()
-          var events = [];
-            
+
           events.push({
             event: eventNameVariable,
-            _key: child.key,
             date: eventDateVariable,
           });
+
+          if(events.length > 3){
+            events.shift();
+          }
           
           this.setState({
             dataSource: this.state.dataSource.cloneWithRows(events)
@@ -108,18 +111,21 @@ export default class ProfileScreen extends React.Component {
 
   listenForAchievements(allAchieveRef) {
     allAchieveRef.on('value', (snap) => {
+      var achievements = new Array();
 
       snap.forEach((child) => {
         var achieveVariableRef = this.allAchieveRef.child(child.val())
         var achieveNameVariable;
         achieveVariableRef.once('value').then((snapshot) => {
           achieveNameVariable = snapshot.val()
-          var achievements = [];
 
           achievements.push({
             achievement: achieveNameVariable,
-            _key: child.key,
           });
+
+          if(achievements.length > 3){
+            achievements.shift();
+          }
           
           this.setState({
             dataSource2: this.state.dataSource2.cloneWithRows(achievements)
