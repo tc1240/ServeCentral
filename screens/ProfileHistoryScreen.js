@@ -104,9 +104,7 @@ export default class ProfileHistory extends React.Component {
       <ScrollView style={styles.container}>
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <TouchableHighlight onPress={() => Actions.profhistory()}>
-              <Text style={[styles.historyHead]}>History ></Text>             
-            </TouchableHighlight>
+            <Text style={[styles.historyHead]}>History ></Text>   
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
                   style={styles.container} />
