@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, View, ListView, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { Platform, View, ListView, Text, TouchableHighlight, StyleSheet, TouchableOpacity } from 'react-native';
 import * as firebase from 'firebase';
 import * as constants from '../App';
 import * as colors from '../constants/Colors'
