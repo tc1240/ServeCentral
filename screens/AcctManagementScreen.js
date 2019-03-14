@@ -140,7 +140,7 @@ export default class AcctManagementScreen extends React.Component {
     //const { navigate } = this.props.navigation;
     return (
       
-      <KeyboardAwareScrollView enableOnAndroid={true} style={styles.scrollView}> 
+      <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={200} style={styles.scrollView}> 
       <View style={styles.container}>           
            
            <Image

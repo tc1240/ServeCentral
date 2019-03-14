@@ -126,7 +126,7 @@ export default class RegisterScreen extends React.Component {
     //const { navigate } = this.props.navigation;
     return (
       
-      <KeyboardAwareScrollView enableOnAndroid={true} style={styles.scrollView}> 
+      <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={200} style={styles.scrollView}> 
       <View style={styles.container}>
       
         {/* Go ahead and delete ExpoLinksView and replace it with your
