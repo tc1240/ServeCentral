@@ -4,10 +4,19 @@ import * as firebase from 'firebase';
 import * as constants from '../App';
 import * as colors from '../constants/Colors'
 import { Ionicons } from '@expo/vector-icons';
+import { Actions } from 'react-native-router-flux';
 
 export default class EventsScreen extends React.Component {
   static navigationOptions = {
     title: 'Events',
+    headerTitleStyle: {
+      fontWeight: 'normal',
+      backgroundColor: colors.maroon,
+      color: colors.tan,
+    },
+    headerStyle: {
+      backgroundColor: colors.maroon
+    }
   };
 
   constructor(props) {
@@ -291,12 +300,19 @@ export default class EventsScreen extends React.Component {
 
     return (<ListItem event={event} />);
   }
+
 }
 
-class ListItem extends Component {      
+class ListItem extends Component {    
+
+  onEventPress(event){
+    //Gets event clicked and passes it to eventinfo. It can be recieved on eventInfo using this.props.event.event
+    Actions.eventinfo({event: event})
+  }
+
   render() {
     return (
-      <TouchableHighlight onPress={this.props.onPress}>
+      <TouchableOpacity onPress={() => this.onEventPress(this.props.event)}>
         <View style={styles.li}>
           <View style={styles.firstItem}>
             <Ionicons
@@ -309,7 +325,7 @@ class ListItem extends Component {
           </View>
           <Text style={styles.asideText}>{this.props.event.event.Date}</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 }
