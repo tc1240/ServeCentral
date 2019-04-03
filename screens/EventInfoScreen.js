@@ -32,7 +32,6 @@ export default class ProfileScreen extends React.Component {
     try{
       if(firebase.auth().currentUser != null){
         var user = firebase.auth().currentUser;
-        console.log(user.uid);
         return user.uid;
       }
     }
@@ -43,32 +42,58 @@ export default class ProfileScreen extends React.Component {
   //This method will add the user to the event's list of participants, add the event to the 
   //  user's list of events, and change the color of the button to orange to show it has been clicked
   onRegister(){
-    console.log('register clicked')
-
     try {      
       // Error stuff
-
       var eventKey = this.props.event._key;
 
-      // IN order for both of these to work you must have a push instead of update, however this will
-      //  require reworking the profile page code and any others that access the user's history path.
-      //  What push does is creates a unique id that holds the field userId: currentUser, what we
-      //  currently look for is events/userID rather than events/(unique id)/userID
-
       //Add users uid to event's attendees list
-      firebase.database().ref('Events/'+eventKey+'/Attendees').update(
-        {
-          userId: this.getUser(),
-        }
-      )
-      //Add event _key to user's history events list  
-      firebase.database().ref('Users/'+this.getUser()+'/history').update(
-        {
-          event: eventKey,
-        }
-      )
+      this.eventAttendeesRef = firebase.database().ref('Events/'+eventKey+'/Attendees');
+      this.eventAttendeesRef.push({attending: 'yes', userID: this.getUser()})
 
+      //Add event _key to user's history events list  
+      this.userEventsRef = firebase.database().ref('Users/'+this.getUser()+'/history');
+      this.userEventsRef.push({eventID: eventKey})
+
+      this.RegisterButton()
       this.refs.toast.show('You\'re signed up!', 2000);
+
+    } catch (error) {
+        console.log(error.toString())
+        this.refs.toast.show("Oops! That was an unexpected error!", 2000);
+    }
+
+  }
+
+  async onUnregister(){
+    try {      
+      // Error stuff
+      var eventKey = this.props.event._key;
+      const userID = this.state.userID;
+
+      //remove users uid to event's attendees list
+      this.eventAttendeesRef = firebase.database().ref('Events/'+eventKey+'/Attendees');
+      eventAttendeesRef.once('value').then((snap) =>{
+        snap.forEach((child) =>{
+          var childUserID = child.child("userID").val()
+          if(childUserID === userID){
+            child.ref.remove()
+          }
+        })
+      })
+
+      //Add event _key to user's history events list  
+      this.userEventsRef = firebase.database().ref('Users/'+this.getUser()+'/history');
+      await this.userEventsRef.once('value').then((snap) =>{
+        snap.forEach((child) =>{
+          var childEventID = child.child("eventID").val()
+          if(childEventID === eventKey){
+            child.ref.remove()
+          }
+        })
+      })
+
+      this.refs.toast.show('YOU HAVE UNREGISTERED!', 2000);
+      this.RegisterButton()
 
     } catch (error) {
         console.log(error.toString())
@@ -83,12 +108,53 @@ export default class ProfileScreen extends React.Component {
     this.eventsRef = constants.firebaseApp.database().ref('Events');
     
     const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+    const userID = this.getUser();
     this.state = {
       dataSource: dataSource,
+      event: props.event._key,
+      userID: userID,
+      registeredState: false,
+      registeredStateDisplay: null
+    }
+  }
+
+  componentDidMount(){
+    this.RegisterButton();
+  }
+
+  RegisterButton = async () => {
+    var eventKey = this.state.event;
+    const userID = this.state.userID;
+    eventAttendeesRef = constants.firebaseApp.database().ref('Events/' + eventKey + '/Attendees')
+    
+    await eventAttendeesRef.once('value').then((snapshot) => {
+      this.state.registeredState = false
+       snapshot.forEach((child) => {
+        var childUserID = child.child("userID").val()
+        if(childUserID === userID){
+          this.state.registeredState = true
+        }
+      })      
+    })
+
+    if(this.state.registeredState){
+      this.setState({ registeredStateDisplay: (
+        <View style={[styles.bot]}>
+          <Button color={'#FF0000'} title={'Unregister (Caution!)'} onPress={() => this.onUnregister()} style={styles.regForEvent}></Button>
+        </View>
+      ) });
+    } else {
+      this.setState({registeredStateDisplay: (
+        <View style={[styles.bot]}>
+          <Button color={colors.maroon} title={'Register for Event'} onPress={() => this.onRegister()} style={styles.regForEvent}></Button>
+        </View>
+      )})
     }
   }
 
   render() {
+
+
     return (
       <ScrollView style={styles.container}>
         <View style={[styles.top]}>
@@ -113,9 +179,9 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.tag}>{this.props.event.event.PrimaryTag}</Text>
         </View>
         <Toast ref="toast"/>
-        <View style={[styles.bot]}>
-            <Button color={colors.maroon} title={'Register for Event'} onPress={() => this.onRegister()} style={styles.regForEvent}></Button>
-        </View>
+
+        {this.state.registeredStateDisplay}
+
       </ScrollView>
     );
   }
@@ -205,5 +271,16 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 100,
   },
+  registered: {
+    flex:1,
+    width:500,
+    fontSize: 20,
+    backgroundColor:colors.orange,
+  },
+  registeredBot: {
+    flex:1,
+    justifyContent: 'center',
+    flexDirection: 'column'
+  }
   
 });

@@ -114,7 +114,6 @@ export default class EventsScreen extends React.Component {
       }
     });
     let result = await promise;
-    console.log("changeSTyle" + this.state.filterSelect);
     this.listenForEvents(this.eventsRef);
   }
 
@@ -167,8 +166,6 @@ export default class EventsScreen extends React.Component {
               : 'md-bookmarks'; 
           tagColor = '#F44336'
         }
-
-        console.log(eventValue.PrimaryTag + " :: " + this.state.filterSelect);
 
         var run = false;
         if(eventValue.PrimaryTag === this.state.filterSelect){
