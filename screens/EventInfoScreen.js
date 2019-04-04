@@ -2,9 +2,10 @@ import React from 'react';
 import * as constants from '../App';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
-import { Button } from 'react-native';
+import { Button, TouchableOpacity } from 'react-native';
 import colors from '../constants/Colors';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import { Actions } from 'react-native-router-flux';
 import { 
   Text, 
   View,
@@ -152,6 +153,11 @@ export default class ProfileScreen extends React.Component {
     }
   }
 
+  onEventPress(event){
+    //Gets event clicked and passes it to eventinfo. It can be recieved on eventInfo using this.props.event.event
+    Actions.eventinfo({event: event})
+  }
+
   render() {
 
 
@@ -182,6 +188,9 @@ export default class ProfileScreen extends React.Component {
 
         {this.state.registeredStateDisplay}
 
+        <TouchableOpacity onPress={() => this.onEventPress(this.props.event)}>
+          <Text>Intense Registe</Text>
+        </TouchableOpacity>
       </ScrollView>
     );
   }
