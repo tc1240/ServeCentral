@@ -97,7 +97,7 @@ export default class ProfileScreen extends React.Component {
           eventDateVariable = snapshot.child("Date").val()
           var atoday = new Date();
           var aeventDate = new Date(eventDateVariable);
-          console.log(aeventDate.getTime() < atoday.getTime())
+          
           if(aeventDate.getTime() < atoday.getTime()){
             events.push({
               event: eventNameVariable,
@@ -316,7 +316,7 @@ export default class ProfileScreen extends React.Component {
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <TouchableHighlight onPress={() => Actions.profhistory()}>
+            <TouchableHighlight onPress={() => Actions.profcurrentevents()}>
               <Text style={[styles.historyHead]}>Current Events ></Text>             
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSourceCurrentEvents}

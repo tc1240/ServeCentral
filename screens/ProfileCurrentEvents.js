@@ -20,17 +20,9 @@ import {
 var { height } = Dimensions.get('window'); 
 var { width } = Dimensions.get('window'); 
 
-export default class ProfileCurrentEvents extends React.Component {
+export default class ProfileHistory extends React.Component {
     static navigationOptions = {
-      title: 'Current Events',
-      headerTitleStyle: {
-        fontWeight: 'normal',
-        backgroundColor: colors.maroon,
-        color: colors.tan,
-      },
-      headerStyle: {
-        backgroundColor: colors.maroon
-      }
+      title: 'History',
     };
     getUser(){
         try{
@@ -47,32 +39,31 @@ export default class ProfileCurrentEvents extends React.Component {
     constructor(props) {
         super(props);
 
-        this.ProfileCurrentEvents = constants.firebaseApp.database().ref('Users/'+this.getUser().uid);
+        this.ProfileHist = constants.firebaseApp.database().ref('Users/'+this.getUser().uid);
         this.eventsRef = constants.firebaseApp.database().ref('Events');
-        
+        this.historyRef = constants.firebaseApp.database().ref('Users/'+this.getUser()+'/history');
 
 
         const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
 
         this.state = {
-            ProfileCurrentEvents: '',
+            ProfileHist: '',
             dataSource: dataSource
           }
-          
-          this.ProfileEvents.once('value', (snap) => {
-            userCurrentEvents = {
-                events: snap.child('events').val(),
+          this.ProfileHist.once('value', (snap) => {
+            userHistory = {
+                events: snap.child('history').val(),
                 //social: snap.child('tags/social').val()
               };
               this.setState({
-                ProfileCurrentEvents: userCurrentEvents
+                ProfileHist: userHistory
               });
         
-              console.log(this.state.ProfileCurrentEvents.events);
+              console.log(this.state.ProfileHist.events);
             });
     }
     componentDidMount(){
-      this.listenForEvents(this.currentEventRef);
+      this.listenForEvents(this.historyRef);
     }
     listenForEvents(eventsRef) {
       eventsRef.on('value', (snap) => {
@@ -80,22 +71,23 @@ export default class ProfileCurrentEvents extends React.Component {
   
         snap.forEach((child) => {
           console.log(child);
-          var eventVariableRef = this.eventsRef.child(child.val())
+          var eventVariableRef = this.eventsRef.child(child.child("eventID").val())
           var eventNameVariable;
           var eventDateVariable;
           eventVariableRef.once('value').then((snapshot) => {
             eventNameVariable = snapshot.child("Name").val()
             eventDateVariable = snapshot.child("Date").val()
-            
-              
+
+            var atoday = new Date();
+          var aeventDate = new Date(eventDateVariable);
+          
+          if(aeventDate.getTime() >= atoday.getTime()){
             events.push({
               event: eventNameVariable,
               _key: child.key,
               date: eventDateVariable,
             });
-
-          
-            
+          }
             this.setState({
               dataSource: this.state.dataSource.cloneWithRows(events)
             });
@@ -113,8 +105,8 @@ export default class ProfileCurrentEvents extends React.Component {
       <ScrollView style={styles.container}>
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <TouchableHighlight onPress={() => Actions.profCurrentEvents()}>
-              <Text style={[styles.currentEventsHead]}>Current Events ></Text>             
+            <TouchableHighlight onPress={() => Actions.profhistory()}>
+              <Text style={[styles.historyHead]}>Current Events ></Text>             
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}

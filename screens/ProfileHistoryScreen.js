@@ -71,19 +71,24 @@ export default class ProfileHistory extends React.Component {
   
         snap.forEach((child) => {
           console.log(child);
-          var eventVariableRef = this.eventsRef.child(child.val())
+          var eventVariableRef = this.eventsRef.child(child.child("eventID").val())
           var eventNameVariable;
           var eventDateVariable;
           eventVariableRef.once('value').then((snapshot) => {
             eventNameVariable = snapshot.child("Name").val()
             eventDateVariable = snapshot.child("Date").val()
-            
-              
+
+            var atoday = new Date();
+          var aeventDate = new Date(eventDateVariable);
+          
+          if(aeventDate.getTime() < atoday.getTime()){
             events.push({
               event: eventNameVariable,
               _key: child.key,
               date: eventDateVariable,
             });
+          }
+            
 
           
             
