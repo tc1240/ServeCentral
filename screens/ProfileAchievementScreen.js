@@ -20,6 +20,14 @@ var { width } = Dimensions.get('window');
 export default class ProfileAchievements extends React.Component {
     static navigationOptions = {
       title: 'Achievements',
+      headerTitleStyle: {
+        fontWeight: 'normal',
+        backgroundColor: colors.maroon,
+        color: colors.tan,
+      },
+      headerStyle: {
+        backgroundColor: colors.maroon
+      }
     };
     getUser(){
         try{
