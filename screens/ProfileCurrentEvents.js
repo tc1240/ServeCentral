@@ -20,9 +20,17 @@ import {
 var { height } = Dimensions.get('window'); 
 var { width } = Dimensions.get('window'); 
 
-export default class ProfileHistory extends React.Component {
+export default class ProfileCurrent extends React.Component {
     static navigationOptions = {
-      title: 'History',
+      title: 'Upcoming Events',
+      headerTitleStyle: {
+        fontWeight: 'normal',
+        backgroundColor: colors.maroon,
+        color: colors.tan,
+      },
+      headerStyle: {
+        backgroundColor: colors.maroon
+      }
     };
     getUser(){
         try{
