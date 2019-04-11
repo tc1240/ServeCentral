@@ -20,9 +20,9 @@ import {
 var { height } = Dimensions.get('window'); 
 var { width } = Dimensions.get('window'); 
 
-export default class ProfileHistory extends React.Component {
+export default class ProfileCurrent extends React.Component {
     static navigationOptions = {
-      title: 'History',
+      title: 'Upcoming Events',
       headerTitleStyle: {
         fontWeight: 'normal',
         backgroundColor: colors.maroon,
@@ -89,17 +89,13 @@ export default class ProfileHistory extends React.Component {
             var atoday = new Date();
           var aeventDate = new Date(eventDateVariable);
           
-          if(aeventDate.getTime() < atoday.getTime()){
+          if(aeventDate.getTime() >= atoday.getTime()){
             events.push({
               event: eventNameVariable,
               _key: child.key,
               date: eventDateVariable,
             });
           }
-            
-
-          
-            
             this.setState({
               dataSource: this.state.dataSource.cloneWithRows(events)
             });
@@ -118,7 +114,7 @@ export default class ProfileHistory extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
             <TouchableHighlight onPress={() => Actions.profhistory()}>
-              <Text style={[styles.historyHead]}>History ></Text>             
+              <Text style={[styles.historyHead]}>Current Events ></Text>             
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
