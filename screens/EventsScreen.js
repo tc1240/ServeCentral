@@ -175,12 +175,25 @@ export default class EventsScreen extends React.Component {
           run = true;
         }
 
-        
         var today = new Date();
         var eventDate = new Date(eventValue.Date);
-
         if(eventDate.getTime() <= today.getTime()){
           run = false;
+        }
+
+        var VolunteerCount = Object.keys(child.val().Attendees).length;
+        var Capacity = child.val().Capacity;
+        var need = 'High!'
+        var needColor = '#FF0000'
+        if(Capacity - VolunteerCount <= 0){
+          need = 'Met!'
+          needColor = '#00FF00'
+        } else if (Capacity - VolunteerCount <= 10){
+          need = 'Low'
+          needColor = '#0000FF'
+        } else if (Capacity - VolunteerCount <= 30){
+          need = 'Medium'
+          needColor = '#FFFF00'
         }
 
         if(run){
@@ -188,7 +201,9 @@ export default class EventsScreen extends React.Component {
             event: child.val(),
             _key: child.key,
             primaryTag: primaryTag,
-            tagColor: tagColor
+            tagColor: tagColor,
+            need: need,
+            needColor: needColor
           });
         }  
 
@@ -344,8 +359,9 @@ class ListItem extends Component {
   }
 
   render() {
+    const needColor = this.props.event.needColor;
     return (
-      <TouchableOpacity onPress={() => this.onEventPress(this.props.event)}>
+      <TouchableOpacity style={styles.card} onPress={() => this.onEventPress(this.props.event)}>
         <View style={styles.li}>
           <View style={styles.firstItem}>
             <Ionicons
@@ -357,6 +373,10 @@ class ListItem extends Component {
             <Text style={styles.liText}> {this.props.event.event.Name}</Text>
           </View>
           <Text style={styles.asideText}>{this.props.event.event.Date}</Text>
+        </View>
+        <View style={styles.li}>
+          <Text>{this.props.event.event.Address}</Text>
+          <Text style={{color: needColor}}>{this.props.event.need}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -376,7 +396,9 @@ const styles = StyleSheet.create({
   listview: {
     flex: 1,
   },
-  li: {
+  card: {
+    flex: 1,
+    flexDirection: 'column',
     backgroundColor: colors.default.orange,
     borderBottomColor: colors.default.tan,
     borderColor: 'transparent',
@@ -385,6 +407,8 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingTop: 14,
     paddingBottom: 16,
+  },
+  li: {
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
