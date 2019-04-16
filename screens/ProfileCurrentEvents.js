@@ -163,19 +163,20 @@ const styles = StyleSheet.create({
       backgroundColor: colors.tan,
     },
     liText:{
-      fontSize: 25,
-      fontWeight: 'bold',
+      color: '#333',
+      fontSize: 16,
 
     },
     asideText:{
-      fontSize: 20,
+      color: '#333',
+      fontSize: 16,
 
     },
-    text:{
-      position: 'absolute',
-      fontWeight: 'bold',
-      fontSize: 25,
-    },
+    // text:{
+    //   position: 'absolute',
+    //   fontWeight: 'bold',
+    //   fontSize: 25,
+    // },
     // Top
     top: {
       // top is 30% of screen
@@ -193,6 +194,18 @@ const styles = StyleSheet.create({
       // bottom is 10%
       flex: .10,
     },
+    li: {
+      backgroundColor: colors.orange,
+      borderBottomColor: colors.tan,
+      borderColor: 'transparent',
+      borderWidth: 1,
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 14,
+      paddingBottom: 16,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
     history: {
       fontSize: 27,
       fontWeight: 'bold',
@@ -206,9 +219,8 @@ const styles = StyleSheet.create({
       margin:10,
     },
     historyHead: {
-      fontSize: 40,
-      fontWeight: 'bold',
+      fontSize: 30,
       color: colors.maroon,
-    },
+    }
     
   });
