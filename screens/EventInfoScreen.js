@@ -123,6 +123,7 @@ export default class ProfileScreen extends React.Component {
     this.RegisterButton();
   }
 
+  //fix how dumb this is Garrett. Look at what you did in EventsScreen. Your an Idiot.
   RegisterButton = async () => {
     var eventKey = this.state.event;
     const userID = this.state.userID;

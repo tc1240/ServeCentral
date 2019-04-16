@@ -87,7 +87,7 @@ export default class ProfileCurrent extends React.Component {
             eventDateVariable = snapshot.child("Date").val()
 
             var atoday = new Date();
-          var aeventDate = new Date(eventDateVariable);
+            var aeventDate = new Date(eventDateVariable);
           
           if(aeventDate.getTime() >= atoday.getTime()){
             events.push({
