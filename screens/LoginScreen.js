@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import colors from '../constants/Colors';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -44,44 +45,45 @@ export default class LoginScreen extends React.Component {
   render() {
     //const { navigate } = this.props.navigation;
     return (
-      
       <View style={styles.container}>
         {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
+          * content, we just wanted to provide you with some helpful links */}
         <Image
-              source={require('../assets/images/icon1.png')}
-              style={styles.imageStyle}
-            />      
-            <Text style={styles.header}>Login</Text>    
-            <TextInput
-            style={styles.loginItems}
-            placeholder="Email"
-            autoCapitalize={"none"}
-            placeholderTextColor={colors.maroon}
-            onChangeText={(text) => this.setState({username: text})}
-            />
-            <TextInput
-            style={styles.loginItems}
-            placeholder="Password"
-            secureTextEntry={true}
-            password={true}
-            autoCapitalize={"none"}
-            placeholderTextColor={colors.maroon}
-            onChangeText={(text1) => this.setState({password: text1})}
-            
-            />
-            <Button
-            title="Login"
-            style={styles.loginBtn}
-            color={colors.maroon}
-            onPress={() => this.login(this.state.username,this.state.password)}
-            />
-            <TouchableOpacity 
-            style={styles.regHere} 
-            onPress={this.register}>
-              <Text>Don't have an account? Register here!</Text>
-            </TouchableOpacity>
-            <Toast ref="toast"/>
+          source={require('../assets/images/icon1.png')}
+          style={styles.imageStyle}
+        />      
+        <Text style={styles.header}>Login</Text>    
+        <TextInput
+        style={styles.loginItems}
+        placeholder="Email"
+        autoCapitalize={"none"}
+        placeholderTextColor={colors.maroon}
+        onChangeText={(text) => this.setState({username: text})}
+        onSubmitEditing={() => { this.password.focus(); }}
+        />
+        <TextInput
+        style={styles.loginItems}
+        placeholder="Password"
+        secureTextEntry={true}
+        password={true}
+        autoCapitalize={"none"}
+        placeholderTextColor={colors.maroon}
+        onChangeText={(text1) => this.setState({password: text1})}
+        ref={(input) => { this.password = input; }}
+        
+        />
+        <Button
+        title="Login"
+        style={styles.loginBtn}
+        color={colors.maroon}
+        onPress={() => this.login(this.state.username,this.state.password)}
+        />
+        <TouchableOpacity 
+        style={styles.regHere} 
+        onPress={this.register}>
+          <Text>Don't have an account? Register here!</Text>
+        </TouchableOpacity>
+        <Toast ref="toast"/>
       </View>
     );
   }

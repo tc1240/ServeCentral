@@ -104,17 +104,14 @@ export default class ProfileAchievements extends React.Component {
               <ScrollView style={styles.container}>
                 <View style={{borderBottomWidth: 1}}>
                   <View style={[styles.achievementSection]}>
-                    <TouchableHighlight onPress={() => Actions.profachievment()}>
-                      <Text style={[styles.achievementHead]}>Achievements ></Text>              
-                    </TouchableHighlight>
+                    <Text style={[styles.achievementHead]}>Achievements ></Text>
+                    <Text>{"\n"}</Text>
                     <ListView dataSource={this.state.dataSource}
                       renderRow={this._renderItem.bind(this)}
                       style={styles.container} />
                   </View>
-
                 </View>
-
-                </ScrollView>
+              </ScrollView>
             );
           }
           _renderItem(achievements) {
@@ -125,14 +122,21 @@ export default class ProfileAchievements extends React.Component {
             return (<ListItem achievements={achievements} />);
           }
         }
-        class ListItem extends Component {      
+        class ListItem extends Component { 
+          // Uncomment the following when/if an acheivementInfo page is created. (a page to see an achievement and its criteria)
+          //    This will allow you to add a link to the listed achiements and pass the data to the achievement page
+          // onAchievementPress(acheivement){
+          //   //Gets event clicked and passes it to eventinfo. It can be recieved on eventInfo using this.props.event.event
+          //   Actions.achieveInfo({achievement: acheivement})
+          // }
+         
           render() {
             return (
-              <TouchableHighlight onPress={this.props.onPress}>
+              //<TouchableHighlight onPress={() => this.onAchievementPress(this.props.achievements.achievement)}>
                 <View style={styles.li}>
                   <Text style={styles.liText}>{this.props.achievements.achievement}</Text>
                 </View>
-              </TouchableHighlight>
+              //</TouchableHighlight>
             );
           }
         }
