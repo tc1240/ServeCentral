@@ -253,14 +253,17 @@ export default class ProfileScreen extends React.Component {
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.PieChartSection]}>
-            <PieChart style={styles.pieChart}
-                chart_wh={chart_wh}
-                series={series}
-                sliceColor={sliceColor}
-                doughnut={true} 
-                coverRadius={0.45}
-                coverFill={colors.tan}
-              />
+            <View style={styles.PieChartAndHours}>
+              <PieChart style={styles.pieChart}
+                  chart_wh={chart_wh}
+                  series={series}
+                  sliceColor={sliceColor}
+                  doughnut={true} 
+                  coverRadius={0.45}
+                  coverFill={colors.tan}
+                />
+              <Text style={styles.totalHours}>{this.state.profileData.serviceHours} Total hours</Text>
+            </View>
             
             <View style={styles.legend}>
               <Ionicons
@@ -306,7 +309,7 @@ export default class ProfileScreen extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
             <TouchableHighlight onPress={() => Actions.profhistory()}>
-              <Text style={[styles.historyHead]}>History ></Text>             
+              <Text style={[styles.historyHead]}>History</Text>             
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
@@ -317,7 +320,7 @@ export default class ProfileScreen extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
             <TouchableHighlight onPress={() => Actions.profcurrentevents()}>
-              <Text style={[styles.historyHead]}>Current Events ></Text>             
+              <Text style={[styles.historyHead]}>Current Events</Text>             
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSourceCurrentEvents}
                   renderRow={this._renderItemCurrentEvent.bind(this)}
@@ -328,7 +331,7 @@ export default class ProfileScreen extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.achievementSection]}>
             <TouchableHighlight onPress={() => Actions.profachievment()}>
-              <Text style={[styles.achievementHead]}>Achievements ></Text>              
+              <Text style={[styles.achievementHead]}>Achievements</Text>              
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSource2}
                   renderRow={this._renderItem2.bind(this)}
@@ -446,13 +449,18 @@ const styles = StyleSheet.create({
 
   // Middle
   PieChartSection: {
-    // mid is 60%
     flex: 1,
     margin: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  PieChartAndHours: {
+    flex: 1,
+    flexDirection: 'column',
+    margin: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   pieChart: {
     flex: 1.5,
@@ -466,7 +474,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
 
   },
+  totalHours: {
+    fontSize: 24,
 
+  },
 
   // Bottom
   HistorySection: {

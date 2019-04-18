@@ -87,7 +87,7 @@ export default class ProfileCurrent extends React.Component {
             eventDateVariable = snapshot.child("Date").val()
 
             var atoday = new Date();
-          var aeventDate = new Date(eventDateVariable);
+            var aeventDate = new Date(eventDateVariable);
           
           if(aeventDate.getTime() >= atoday.getTime()){
             events.push({
@@ -114,7 +114,7 @@ export default class ProfileCurrent extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
             <TouchableHighlight onPress={() => Actions.profhistory()}>
-              <Text style={[styles.historyHead]}>Current Events ></Text>             
+              <Text style={[styles.historyHead]}>Current Events</Text>             
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
@@ -165,12 +165,10 @@ const styles = StyleSheet.create({
     liText:{
       color: '#333',
       fontSize: 16,
-
     },
     asideText:{
       color: '#333',
       fontSize: 16,
-
     },
     // text:{
     //   position: 'absolute',

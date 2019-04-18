@@ -105,7 +105,7 @@ export default class ProfileAchievements extends React.Component {
                 <View style={{borderBottomWidth: 1}}>
                   <View style={[styles.achievementSection]}>
                     <TouchableHighlight onPress={() => Actions.profachievment()}>
-                      <Text style={[styles.achievementHead]}>Achievements ></Text>              
+                      <Text style={[styles.achievementHead]}>Achievements</Text>              
                     </TouchableHighlight>
                     <ListView dataSource={this.state.dataSource}
                       renderRow={this._renderItem.bind(this)}
