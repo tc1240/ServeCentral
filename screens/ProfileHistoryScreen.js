@@ -24,6 +24,14 @@ var { width } = Dimensions.get('window');
 export default class ProfileHistory extends React.Component {
     static navigationOptions = {
       title: 'History',
+      headerTitleStyle: {
+        fontWeight: 'normal',
+        backgroundColor: colors.maroon,
+        color: colors.tan,
+      },
+      headerStyle: {
+        backgroundColor: colors.maroon
+      }
     };
     getUser(){
         try{
