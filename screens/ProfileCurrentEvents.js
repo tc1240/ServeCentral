@@ -73,7 +73,6 @@ export default class ProfileCurrent extends React.Component {
             var aeventDate = new Date(snapshot.val().Date);
             //If that event is older than today then it belongs in the history page so keep it
             if(aeventDate.getTime() >= atoday.getTime()){
-              console.log("child : "+ snapshot.val().Date)
               events.push({
                 event: snapshot.val(),
                 _key: child.key,
@@ -98,7 +97,7 @@ export default class ProfileCurrent extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
             <Text style={[styles.historyHead]}>Upcoming Events ></Text> 
-            <Text>{"\n"}</Text>      
+            <Text>{"\n"}</Text>     
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
                   style={styles.container} />
@@ -146,19 +145,18 @@ const styles = StyleSheet.create({
       backgroundColor: colors.tan,
     },
     liText:{
-      fontSize: 25,
-      fontWeight: 'bold',
-
+      color: '#333',
+      fontSize: 16,
     },
     asideText:{
-      fontSize: 20,
-
+      color: '#333',
+      fontSize: 16,
     },
-    text:{
-      position: 'absolute',
-      fontWeight: 'bold',
-      fontSize: 25,
-    },
+    // text:{
+    //   position: 'absolute',
+    //   fontWeight: 'bold',
+    //   fontSize: 25,
+    // },
     // Top
     top: {
       // top is 30% of screen
@@ -176,6 +174,18 @@ const styles = StyleSheet.create({
       // bottom is 10%
       flex: .10,
     },
+    li: {
+      backgroundColor: colors.orange,
+      borderBottomColor: colors.tan,
+      borderColor: 'transparent',
+      borderWidth: 1,
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 14,
+      paddingBottom: 16,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
     history: {
       fontSize: 27,
       fontWeight: 'bold',
@@ -192,6 +202,6 @@ const styles = StyleSheet.create({
       fontSize: 35,
       fontWeight: 'bold',
       color: colors.maroon,
-    },
+    }
     
   });
