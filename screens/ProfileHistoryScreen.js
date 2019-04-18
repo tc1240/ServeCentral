@@ -17,6 +17,7 @@ import {
 
 
 
+
 var { height } = Dimensions.get('window'); 
 var { width } = Dimensions.get('window'); 
 
@@ -110,7 +111,7 @@ export default class ProfileHistory extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
             <TouchableHighlight onPress={() => Actions.profhistory()}>
-              <Text style={[styles.historyHead]}>History ></Text>             
+              <Text style={[styles.historyHead]}>History</Text>             
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
@@ -161,10 +162,20 @@ const styles = StyleSheet.create({
     liText:{
       fontSize: 25,
       fontWeight: 'bold',
+      backgroundColor: colors.maroon,
+      borderLeftColor: colors.maroon,
+      
+      borderBottomWidth: 0,
+      borderWidth: 2,
+      
 
     },
     asideText:{
       fontSize: 20,
+      borderColor: colors.maroon, 
+      borderTopWidth: 0,
+      borderWidth: 2,
+      
 
     },
     text:{
