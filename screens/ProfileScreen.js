@@ -308,22 +308,22 @@ export default class ProfileScreen extends React.Component {
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <TouchableHighlight onPress={() => Actions.profhistory()}>
-              <Text style={[styles.historyHead]}>History</Text>             
+            <TouchableHighlight onPress={() => Actions.profcurrentevents()}>
+              <Text style={[styles.historyHead]}>Upcoming Events ></Text>
             </TouchableHighlight>
-            <ListView dataSource={this.state.dataSource}
-                  renderRow={this._renderItem.bind(this)}
+            <ListView dataSource={this.state.dataSourceCurrentEvents}
+                  renderRow={this._renderItemCurrentEvent.bind(this)}
                   style={styles.container} />
           </View>
         </View>
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <TouchableHighlight onPress={() => Actions.profcurrentevents()}>
-              <Text style={[styles.historyHead]}>Current Events</Text>             
+            <TouchableHighlight onPress={() => Actions.profhistory()}>
+              <Text style={[styles.historyHead]}>History ></Text>      
             </TouchableHighlight>
-            <ListView dataSource={this.state.dataSourceCurrentEvents}
-                  renderRow={this._renderItemCurrentEvent.bind(this)}
+            <ListView dataSource={this.state.dataSource}
+                  renderRow={this._renderItem.bind(this)}
                   style={styles.container} />
           </View>
         </View>
@@ -337,9 +337,7 @@ export default class ProfileScreen extends React.Component {
                   renderRow={this._renderItem2.bind(this)}
                   style={styles.container} />
           </View>
-
         </View>
-
       </ScrollView>
     
     );
