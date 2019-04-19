@@ -14,9 +14,6 @@ import {
   Dimensions,} 
   from 'react-native';
 
-
-
-
 var { height } = Dimensions.get('window'); 
 var { width } = Dimensions.get('window'); 
 
@@ -45,31 +42,20 @@ export default class ProfileCurrent extends React.Component {
         }
     }
     constructor(props) {
-        super(props);
+      super(props);
 
-        this.ProfileHist = constants.firebaseApp.database().ref('Users/'+this.getUser().uid);
-        this.eventsRef = constants.firebaseApp.database().ref('Events');
-        this.historyRef = constants.firebaseApp.database().ref('Users/'+this.getUser()+'/history');
+      this.ProfileHist = constants.firebaseApp.database().ref('Users/'+this.getUser().uid);
+      this.eventsRef = constants.firebaseApp.database().ref('Events');
+      this.historyRef = constants.firebaseApp.database().ref('Users/'+this.getUser()+'/history');
 
 
-        const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+      const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
 
-        this.state = {
-            ProfileHist: '',
-            dataSource: dataSource
-          }
-          this.ProfileHist.once('value', (snap) => {
-            userHistory = {
-                events: snap.child('history').val(),
-                //social: snap.child('tags/social').val()
-              };
-              this.setState({
-                ProfileHist: userHistory
-              });
-        
-              console.log(this.state.ProfileHist.events);
-            });
-    }
+      this.state = {
+          ProfileHist: '',
+          dataSource: dataSource
+        }
+      }
     componentDidMount(){
       this.listenForEvents(this.historyRef);
     }
@@ -78,24 +64,21 @@ export default class ProfileCurrent extends React.Component {
         var events = new Array();
   
         snap.forEach((child) => {
-          console.log(child);
+          //Get all events the user is registered for...
           var eventVariableRef = this.eventsRef.child(child.child("eventID").val())
-          var eventNameVariable;
-          var eventDateVariable;
+          //Loop through each event...
           eventVariableRef.once('value').then((snapshot) => {
-            eventNameVariable = snapshot.child("Name").val()
-            eventDateVariable = snapshot.child("Date").val()
 
             var atoday = new Date();
-          var aeventDate = new Date(eventDateVariable);
-          
-          if(aeventDate.getTime() >= atoday.getTime()){
-            events.push({
-              event: eventNameVariable,
-              _key: child.key,
-              date: eventDateVariable,
-            });
-          }
+            var aeventDate = new Date(snapshot.val().Date);
+            //If that event is older than today then it belongs in the history page so keep it
+            if(aeventDate.getTime() >= atoday.getTime()){
+              events.push({
+                event: snapshot.val(),
+                _key: child.key,
+              });
+            }
+            //Set state to all old events to be displayed in history listview
             this.setState({
               dataSource: this.state.dataSource.cloneWithRows(events)
             });
@@ -113,19 +96,13 @@ export default class ProfileCurrent extends React.Component {
       <ScrollView style={styles.container}>
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <TouchableHighlight onPress={() => Actions.profhistory()}>
-              <Text style={[styles.historyHead]}>Current Events ></Text>             
-            </TouchableHighlight>
+            <Text style={[styles.historyHead]}>Upcoming Events ></Text> 
+            <Text>{"\n"}</Text>     
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
                   style={styles.container} />
           </View>
         </View>
-      
-        
-
-        
-
       </ScrollView>
     
     );
@@ -140,13 +117,18 @@ export default class ProfileCurrent extends React.Component {
     }
   }
 
-    class ListItem extends Component {      
+    class ListItem extends Component {    
+      onEventPress(event){
+        //Gets event clicked and passes it to eventinfo. It can be recieved on eventInfo using this.props.event.event
+        Actions.eventinfo({event: event})
+      }
+
       render() {
         return (
-          <TouchableHighlight onPress={this.props.onPress}>
+          <TouchableHighlight onPress={() => this.onEventPress(this.props.event)}>
             <View style={styles.li}>
-              <Text style={styles.liText}>{this.props.event.event}</Text>
-              <Text style={styles.asideText}>{this.props.event.date}</Text>
+              <Text style={styles.liText}>{this.props.event.event.Name}</Text>
+              <Text style={styles.asideText}>{this.props.event.event.Date}</Text>
             </View>
           </TouchableHighlight>
         );
@@ -163,19 +145,18 @@ const styles = StyleSheet.create({
       backgroundColor: colors.tan,
     },
     liText:{
-      fontSize: 25,
-      fontWeight: 'bold',
-
+      color: '#333',
+      fontSize: 16,
     },
     asideText:{
-      fontSize: 20,
-
+      color: '#333',
+      fontSize: 16,
     },
-    text:{
-      position: 'absolute',
-      fontWeight: 'bold',
-      fontSize: 25,
-    },
+    // text:{
+    //   position: 'absolute',
+    //   fontWeight: 'bold',
+    //   fontSize: 25,
+    // },
     // Top
     top: {
       // top is 30% of screen
@@ -193,6 +174,18 @@ const styles = StyleSheet.create({
       // bottom is 10%
       flex: .10,
     },
+    li: {
+      backgroundColor: colors.orange,
+      borderBottomColor: colors.tan,
+      borderColor: 'transparent',
+      borderWidth: 1,
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 14,
+      paddingBottom: 16,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
     history: {
       fontSize: 27,
       fontWeight: 'bold',
@@ -206,9 +199,9 @@ const styles = StyleSheet.create({
       margin:10,
     },
     historyHead: {
-      fontSize: 40,
+      fontSize: 35,
       fontWeight: 'bold',
       color: colors.maroon,
-    },
+    }
     
   });

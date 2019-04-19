@@ -104,17 +104,14 @@ export default class ProfileAchievements extends React.Component {
               <ScrollView style={styles.container}>
                 <View style={{borderBottomWidth: 1}}>
                   <View style={[styles.achievementSection]}>
-                    <TouchableHighlight onPress={() => Actions.profachievment()}>
-                      <Text style={[styles.achievementHead]}>Achievements ></Text>              
-                    </TouchableHighlight>
+                    <Text style={[styles.achievementHead]}>Achievements ></Text>
+                    <Text>{"\n"}</Text>
                     <ListView dataSource={this.state.dataSource}
                       renderRow={this._renderItem.bind(this)}
                       style={styles.container} />
                   </View>
-
                 </View>
-
-                </ScrollView>
+              </ScrollView>
             );
           }
           _renderItem(achievements) {
@@ -125,14 +122,21 @@ export default class ProfileAchievements extends React.Component {
             return (<ListItem achievements={achievements} />);
           }
         }
-        class ListItem extends Component {      
+        class ListItem extends Component { 
+          // Uncomment the following when/if an acheivementInfo page is created. (a page to see an achievement and its criteria)
+          //    This will allow you to add a link to the listed achiements and pass the data to the achievement page
+          // onAchievementPress(acheivement){
+          //   //Gets event clicked and passes it to eventinfo. It can be recieved on eventInfo using this.props.event.event
+          //   Actions.achieveInfo({achievement: acheivement})
+          // }
+         
           render() {
             return (
-              <TouchableHighlight onPress={this.props.onPress}>
+              //<TouchableHighlight onPress={() => this.onAchievementPress(this.props.achievements.achievement)}>
                 <View style={styles.li}>
                   <Text style={styles.liText}>{this.props.achievements.achievement}</Text>
                 </View>
-              </TouchableHighlight>
+              //</TouchableHighlight>
             );
           }
         }
@@ -146,8 +150,8 @@ const styles = StyleSheet.create({
       backgroundColor: colors.tan,
     },
     liText:{
-      fontSize: 25,
-      fontWeight: 'bold',
+      color: '#333',
+      fontSize: 16,
     },
     text:{
       position: 'absolute',
@@ -172,14 +176,25 @@ const styles = StyleSheet.create({
       flex: .10,
     },
     achievementSection: {
-    flex: 1,
-    flexDirection: 'column',
-    margin:10,
-  },
-  achievementHead: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: colors.maroon,
-  }
+      flex: 1,
+      flexDirection: 'column',
+      margin: 10,
+    },
+    achievementHead: {
+      fontSize: 30,
+      color: colors.maroon,
+    },
+    li: {
+      backgroundColor: colors.orange,
+      borderBottomColor: colors.tan,
+      borderColor: 'transparent',
+      borderWidth: 1,
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 14,
+      paddingBottom: 16,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
     
   });
