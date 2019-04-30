@@ -108,7 +108,7 @@ export default class ProfileHistory extends React.Component {
       <ScrollView style={styles.container}>
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <Text style={[styles.historyHead]}>History ></Text>  
+            <Text style={[styles.historyHead]}>History</Text>  
             <Text>{"\n"}</Text>   
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
