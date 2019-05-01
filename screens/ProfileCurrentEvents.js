@@ -96,8 +96,8 @@ export default class ProfileCurrent extends React.Component {
       <ScrollView style={styles.container}>
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
-            <Text style={[styles.historyHead]}>Upcoming Events ></Text> 
-            <Text>{"\n"}</Text>     
+            {/* <Text style={[styles.historyHead]}>Upcoming Events ></Text> */}
+            {/* <Text>{"\n"}</Text>      */}
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
                   style={styles.container} />
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     },
     history: {
       fontSize: 27,
-      fontWeight: 'bold',
+      // fontWeight: 'bold',
       marginLeft: 130,
       marginTop: 10,
     },
@@ -199,8 +199,7 @@ const styles = StyleSheet.create({
       margin:10,
     },
     historyHead: {
-      fontSize: 35,
-      fontWeight: 'bold',
+      fontSize: 30,
       color: colors.maroon,
     }
     
