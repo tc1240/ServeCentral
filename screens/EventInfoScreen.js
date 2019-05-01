@@ -2,7 +2,7 @@ import React from 'react';
 import * as constants from '../App';
 import { Ionicons } from '@expo/vector-icons';
 import * as firebase from 'firebase';
-import { Button, TouchableOpacity } from 'react-native';
+import { Platform, Button, TouchableOpacity } from 'react-native';
 import colors from '../constants/Colors';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import { Actions } from 'react-native-router-flux';
@@ -160,20 +160,69 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
-
+    let iconLeaf =
+      Platform.OS === 'ios'
+        ? `ios-leaf`
+        : 'ios-leaf';
+    let iconPeople =
+      Platform.OS === 'ios'
+        ? `ios-people`
+        : 'md-people';            
+    let iconConstruct =
+      Platform.OS === 'ios'
+        ? `ios-construct`
+        : 'md-construct';
+    let iconWalk =
+      Platform.OS === 'ios'
+        ? `ios-walk`
+        : 'md-walk';
+    let iconCash =
+      Platform.OS === 'ios'
+        ? `ios-cash`
+        : 'md-cash';  
+    let iconBible =
+      Platform.OS === 'ios'
+        ? `ios-bookmarks`
+        : 'md-bookmarks';
+    var myIcon;
+    var myColor;
+    if (this.props.event.event.PrimaryTag == "Environmental") {
+      myIcon = iconLeaf;
+      myColor = '#4CAF50';
+    }
+    else if (this.props.event.event.PrimaryTag == "Social") {
+      myIcon = iconPeople;
+      myColor = 'purple';
+    }
+    else if (this.props.event.event.PrimaryTag == "Construction") {
+      myIcon = iconConstruct;
+      myColor = '#ED0';
+    }
+    else if (this.props.event.event.PrimaryTag == "Walk") {
+      myIcon = iconWalk;
+      myColor = '#FF9800';
+    }
+    else if (this.props.event.event.PrimaryTag == "Fundraiser") {
+      myIcon = iconCash;
+      myColor = '#2196F3';
+    }
+    else if (this.props.event.event.PrimaryTag == "Ministry") {
+      myIcon = iconBible;
+      myColor = '#F44336';
+    }
 
     return (
       <ScrollView style={styles.container}>
         <View style={[styles.top]}>
             <Image source={require('../assets/images/profPic.png')} style={styles.profPic} /> 
-            <View style={styles.topInfo}>
+            {/* <View style={styles.topInfo}>
               <Text style={styles.name}>{this.props.event.event.Name}</Text>
               <Text style={styles.text}>Event Date</Text>
               <Text style={styles.date}>{this.props.event.event.Date}</Text>
-            </View>
+            </View> */}
         </View>
         <View style={{borderBottomWidth: 1}}></View>
-        <View style={[styles.mid]}>
+        {/* <View style={[styles.mid]}>
           <Text style={styles.text}>Description</Text>
           <Text style={styles.info}>{this.props.event.event.Information}</Text>
           <Text style={styles.text}>Start Time</Text>
@@ -184,14 +233,42 @@ export default class ProfileScreen extends React.Component {
           <Text style={styles.duration}>{this.props.event.event.Duration} Hours</Text>
           <Text style={styles.text}>Event Type</Text>
           <Text style={styles.tag}>{this.props.event.event.PrimaryTag}</Text>
+        </View> */}
+        <View style={[styles.mid]}>
+          <Text style={styles.name}>
+            <Ionicons
+              name={myIcon}
+              size={28}
+              style={[styles.icon]}
+              color={myColor}
+            ></Ionicons>
+            <Text>  </Text>
+            {this.props.event.event.Name}
+          </Text>
+
+          <View style={[styles.midInfo]}>
+          <Text style={styles.text}>Event Date</Text>
+            <Text style={styles.date}>{this.props.event.event.Date}</Text>
+            <Text style={styles.text}>Start Time</Text>
+            <Text style={styles.start}>{this.props.event.event.StartTime}</Text>
+            <Text style={styles.text}>Duration</Text>
+            <Text style={styles.duration}>{this.props.event.event.Duration} Hours</Text>
+            <Text style={styles.text}>Address</Text>
+            <Text style={styles.address}>{this.props.event.event.Address}</Text>
+            <Text style={styles.text}>Event Type</Text>
+            <Text style={styles.tag}>{this.props.event.event.PrimaryTag}</Text>
+          </View>
+
+          <Text style={styles.text}>Description</Text>
+          <Text style={styles.info}>{this.props.event.event.Information}</Text>
         </View>
         <Toast ref="toast"/>
 
         {this.state.registeredStateDisplay}
 
-        <TouchableOpacity onPress={() => this.onEventPress(this.props.event)}>
-          <Text>Intense Registe</Text>
-        </TouchableOpacity>
+        {/* <TouchableOpacity onPress={() => this.onEventPress(this.props.event)}>
+          <Text>Intense Register</Text>
+        </TouchableOpacity> */}
       </ScrollView>
     );
   }
@@ -206,9 +283,10 @@ const styles = StyleSheet.create({
   },
   text:{
     flex: .5,
-    textDecorationLine: 'underline',
-    fontSize: 15,
-    marginTop: 15,
+    // textDecorationLine: 'underline',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.maroon,
   },
   // Top
   top: {
@@ -231,40 +309,51 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1.30
   },
+  //middle
   name: {
-    fontSize: 22,
+    fontSize: 20,
     flex: 1,
-    marginTop: 10,
-    flexWrap: 'wrap'
+    marginTop: 20,
+    marginBottom: 15,
+    flexWrap: 'wrap',
+    alignSelf: 'center'
   },
   date: {
-    fontSize: 22,
+    fontSize: 18,
     flex: 1,
+    marginBottom: 10,
   },
-  // Middle
   mid: {
-    flex: 1.40,
-    marginLeft: 10,
-  },
-  info: {
-    fontSize: 20,
     flex: 1,
-    flexWrap: 'wrap'
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  midInfo: {
+    backgroundColor: colors.orange,
+    borderRadius: 10,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 14,
+    paddingBottom: 16,
+    marginBottom: 10
   },
   start: {
-    fontSize: 20,
+    fontSize: 18,
     flex: 1,
+    marginBottom: 10,
   },
   address: {
-    fontSize: 20,
+    fontSize: 18,
     flex: 1,
+    marginBottom: 10,
   },
   duration: {
-    fontSize: 20,
+    fontSize: 18,
     flex: 1,
+    marginBottom: 10,
   },
   tag: {
-    fontSize: 20,
+    fontSize: 18,
     flex: 1,
   },
   // Bottom
@@ -273,7 +362,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10
+    marginTop: 10,
+    marginBottom: 15
+  },
+  info: {
+    fontSize: 18,
+    flex: 1,
+    flexWrap: 'wrap',
+    marginBottom: 5
   },
   regForEvent: {
     fontWeight: 'bold',
@@ -282,13 +378,13 @@ const styles = StyleSheet.create({
     width: 100,
   },
   registered: {
-    flex:1,
-    width:500,
+    flex: 1,
+    width: 500,
     fontSize: 20,
-    backgroundColor:colors.orange,
+    backgroundColor: colors.orange,
   },
   registeredBot: {
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
     flexDirection: 'column'
   }
