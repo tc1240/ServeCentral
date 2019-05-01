@@ -9,6 +9,7 @@ import ProfileHistoryScreen from '../screens/ProfileHistoryScreen';
 import RootNavigation from '../navigation/RootNavigation';
 import EventInfoScreen from '../screens/EventInfoScreen'
 import ProfileCurrentEvents from '../screens/ProfileCurrentEvents'
+import EventAddScreen from '../screens/EventAddScreen';
 
 
 export default class Routes extends React.Component {
@@ -23,6 +24,7 @@ export default class Routes extends React.Component {
                     <Scene key="profhistory" component={ProfileHistoryScreen}/>
                     <Scene key="eventinfo" component={EventInfoScreen}/>
                     <Scene key="profcurrentevents" component={ProfileCurrentEvents}/>
+                    <Scene key="eventaddscreen" component={EventAddScreen}/>
                     {/* Main Tab Navigation is the bottom bar navigation */}
                     <Scene key="main" component={RootNavigation}/>
                 </Stack>
