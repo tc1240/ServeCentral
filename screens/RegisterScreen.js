@@ -60,7 +60,9 @@ export default class RegisterScreen extends React.Component {
             ministry:0,
           },
           history: {
-            event: '0001',
+            initialEvent: {
+              eventID: '0001'
+            },
           },
           achievements: {
             ach001: '0001',

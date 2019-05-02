@@ -97,7 +97,7 @@ export default class ProfileCurrent extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
             <Text style={[styles.historyHead]}>Upcoming Events</Text> 
-            <Text>{"\n"}</Text>     
+            <Text>{"\n"}</Text> 
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
                   style={styles.container} />

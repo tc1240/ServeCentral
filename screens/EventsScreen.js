@@ -271,6 +271,7 @@ export default class EventsScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
+        <Button color={colors.default.maroon} title={'Add Event'} onPress={() => Actions.eventaddscreen()} style={styles.addButton}/>
         <View style={styles.filterOptions}>
           <TouchableHighlight
           onPress={ () => this._changeStyle('Environment') }
