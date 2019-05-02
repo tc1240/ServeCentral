@@ -207,7 +207,7 @@ export default class ProfileScreen extends React.Component {
           fundraiser,
           ministry,];
 
-    const sliceColor = ['#4CAF50','purple','#ED0','#FF9800','#2196F3','#F44336'];
+    const sliceColor = ['#4CAF50','purple','#FFFF99','#FF9800','#2196F3','#F44336'];
 
     let iconLeaf =
       Platform.OS === 'ios'
@@ -239,15 +239,17 @@ export default class ProfileScreen extends React.Component {
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.ProfileInfoSection]}>
-            <Image source={require('../assets/images/profPic.png')} style={styles.profPic} /> 
+           {/* <Image source={require('../assets/images/profPic.png')} style={styles.profPic} />  */} */}
             <View style={[styles.userInformation]}>
               <Text style={[styles.text, styles.username]}>{this.state.profileData.name}</Text>
               <Text style={[styles.text, styles.email]}>{this.state.profileData.email}</Text>
+              <Text>                                                                                              </Text>
             </View>
             <TouchableHighlight onPress={() => Actions.acctmanagement()}>
               <Image source={require('../assets/images/settingWheel.png')} style={styles.setting}/>
             </TouchableHighlight>
           </View>
+          
         </View>
 
 
@@ -262,7 +264,7 @@ export default class ProfileScreen extends React.Component {
                   coverRadius={0.45}
                   coverFill={colors.tan}
                 />
-              <Text style={styles.totalHours}>{this.state.profileData.serviceHours} Total hours</Text>
+              {/* <Text style={styles.totalHours}>{this.state.profileData.serviceHours} Total hours</Text> */}
             </View>
             
             <View style={styles.legend}>
@@ -282,7 +284,7 @@ export default class ProfileScreen extends React.Component {
                 name={iconConstruct}
                 size={28}
                 style={[styles.icon]}
-                color={'#ED0'}
+                color={'#FFFF99'}
               >Construction</Ionicons>
               <Ionicons
                 name={iconWalk}
@@ -302,6 +304,7 @@ export default class ProfileScreen extends React.Component {
                 style={[styles.icon]}
                 color={'#F44336'}
               >Ministry</Ionicons>
+               <Text style={styles.totalHours}>{this.state.profileData.serviceHours} Total hours</Text>
             </View>
           </View>
         </View>
@@ -419,18 +422,19 @@ const styles = StyleSheet.create({
   ProfileInfoSection: {
     // top is 30% of screen
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     marginTop: 15,
     marginBottom: 15,
+    marginLeft: 15,
   },
-  profPic: {
-    width: 125,
-    height: 125,
-  },
+  // profPic: {
+  //   width: 125,
+  //   height: 125,
+  // },
   userInformation: {
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
   username: {
     fontSize: 25,
@@ -441,8 +445,10 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   setting: {
-    width: 25,
-    height: 25,
+    width: 27,
+    height: 27,
+    alignSelf: 'flex-end',
+    
   },
 
   // Middle
@@ -452,6 +458,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: colors.orange,
+    borderRadius: 10,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 14,
+    paddingBottom: 16,
+    marginBottom: 10
   },
   PieChartAndHours: {
     flex: 1,
@@ -462,9 +475,11 @@ const styles = StyleSheet.create({
   },
   pieChart: {
     flex: 1.5,
+    marginLeft: 20,
   },
   legend: {
     flex: 1,
+    marginLeft: 70,
   },
   icon: {
     fontSize: 18,
@@ -474,6 +489,7 @@ const styles = StyleSheet.create({
   },
   totalHours: {
     fontSize: 24,
+   
 
   },
 
@@ -483,6 +499,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     margin:10,
+    backgroundColor: colors.orange,
+    borderRadius: 10,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 14,
+    paddingBottom: 16,
+    marginBottom: 10
   },
   historyHead: {
     fontSize: 30,
@@ -495,14 +518,16 @@ const styles = StyleSheet.create({
   li: {
     backgroundColor: colors.orange,
     borderBottomColor: colors.tan,
-    borderColor: 'transparent',
+    borderColor: colors.orange,
     borderWidth: 1,
+    borderRadius: 10,
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 14,
     paddingBottom: 16,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    
   },
   liContainer: {
     flex: 2,
@@ -522,6 +547,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     margin:10,
+    backgroundColor: colors.orange,
+    borderRadius: 10,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 14,
+    paddingBottom: 16,
+    marginBottom: 10
   },
   achievementHead: {
     fontSize: 30,
