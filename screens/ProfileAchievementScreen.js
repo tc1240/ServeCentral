@@ -104,8 +104,8 @@ export default class ProfileAchievements extends React.Component {
               <ScrollView style={styles.container}>
                 <View style={{borderBottomWidth: 1}}>
                   <View style={[styles.achievementSection]}>
-                    <Text style={[styles.achievementHead]}>Achievements ></Text>
-                    <Text>{"\n"}</Text>
+                    {/* <Text style={[styles.achievementHead]}>Achievements</Text> */}
+                    {/* <Text>{"\n"}</Text> */}
                     <ListView dataSource={this.state.dataSource}
                       renderRow={this._renderItem.bind(this)}
                       style={styles.container} />
@@ -153,11 +153,11 @@ const styles = StyleSheet.create({
       color: '#333',
       fontSize: 16,
     },
-    text:{
-      position: 'absolute',
-      fontWeight: 'bold',
-      fontSize: 20,
-    },
+    // text:{
+    //   position: 'absolute',
+    //   fontWeight: 'bold',
+    //   fontSize: 20,
+    // },
     // Top
     top: {
       // top is 30% of screen
