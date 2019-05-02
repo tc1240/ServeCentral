@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     },
     history: {
       fontSize: 27,
-      fontWeight: 'bold',
+      // fontWeight: 'bold',
       marginLeft: 130,
       marginTop: 10,
     },
@@ -199,8 +199,7 @@ const styles = StyleSheet.create({
       margin:10,
     },
     historyHead: {
-      fontSize: 35,
-      fontWeight: 'bold',
+      fontSize: 30,
       color: colors.maroon,
     }
     
