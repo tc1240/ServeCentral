@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, View, ListView, Text, TouchableHighlight, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, View, ListView, Text, TouchableHighlight, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import * as firebase from 'firebase';
 import * as constants from '../App';
 import * as colors from '../constants/Colors'
@@ -35,6 +35,7 @@ export default class EventsScreen extends React.Component {
       ministryColor: colors.default.tan,
       filterSelect: 'None'
     }
+
   }
 
   async _changeStyle(current) {
@@ -174,12 +175,38 @@ export default class EventsScreen extends React.Component {
           run = true;
         }
 
+        var today = new Date();
+        var eventDate = new Date(eventValue.Date);
+        if(eventDate.getTime() <= today.getTime()){
+          run = false;
+        }
+
+        var VolunteerCount = Object.keys(child.val().Attendees).length;
+        var Capacity = child.val().Capacity;
+        var need;
+        var needColor;
+        if(VolunteerCount / Capacity >= .90){
+          need = 'Popular'
+          needColor = '#00FF00'
+        } else if (VolunteerCount / Capacity >= .65){
+          need = 'Nearly met Goal'
+          needColor = '#0000FF'
+        } else if (VolunteerCount / Capacity <= .32){
+          need = 'Halfway to Goal'
+          needColor = '#EEA500'
+        } else {
+          need = 'Needs Volunteers!'
+          needColor = '#FF0000'
+        }
+
         if(run){
           events.push({
             event: child.val(),
             _key: child.key,
             primaryTag: primaryTag,
-            tagColor: tagColor
+            tagColor: tagColor,
+            need: need,
+            needColor: needColor
           });
         }  
 
@@ -189,6 +216,24 @@ export default class EventsScreen extends React.Component {
         dataSource: this.state.dataSource.cloneWithRows(events)
       });
     });
+  }
+
+  async unfilter(){
+    var promise = new Promise((resolve, reject) => {
+      this.setState({
+        environmentColor: colors.default.tan,
+        socialColor: colors.default.tan,
+        constructionColor: colors.default.tan,
+        walkColor: colors.default.tan,
+        fundraiserColor: colors.default.tan,
+        ministryColor: colors.default.tan,
+        filterSelect: 'None'
+      })
+      resolve()
+    })
+
+    let result = await promise;
+    this.listenForEvents(this.eventsRef)
   }
 
   render() {
@@ -216,6 +261,14 @@ export default class EventsScreen extends React.Component {
       Platform.OS === 'ios'
         ? `ios-bookmarks`
         : 'md-bookmarks'; 
+
+    const filterState = this.state.filterSelect;
+    let button;
+    if(filterState === 'None'){
+      button = (<View></View>)
+    } else {
+      button = <Button color={colors.maroon} title={'Reset Filter'} onPress={() => this.unfilter()} style={styles.unfilterButton}/>
+    }
     return (
       <View style={styles.container}>
         <View style={styles.filterOptions}>
@@ -229,7 +282,7 @@ export default class EventsScreen extends React.Component {
               color={'#4CAF50'}
             />
           </TouchableHighlight>
-          
+
           <TouchableHighlight
           onPress={ () => this._changeStyle('Social') }
           style={{backgroundColor: this.state.socialColor, padding:5}}>
@@ -282,6 +335,7 @@ export default class EventsScreen extends React.Component {
           </TouchableHighlight>
         </View>
 
+        {button}
 
         <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
@@ -308,8 +362,9 @@ class ListItem extends Component {
   }
 
   render() {
+    const needColor = this.props.event.needColor;
     return (
-      <TouchableOpacity onPress={() => this.onEventPress(this.props.event)}>
+      <TouchableOpacity style={styles.card} onPress={() => this.onEventPress(this.props.event)}>
         <View style={styles.li}>
           <View style={styles.firstItem}>
             <Ionicons
@@ -321,6 +376,10 @@ class ListItem extends Component {
             <Text style={styles.liText}> {this.props.event.event.Name}</Text>
           </View>
           <Text style={styles.asideText}>{this.props.event.event.Date}</Text>
+        </View>
+        <View style={styles.li}>
+          <Text>{this.props.event.event.Address}</Text>
+          <Text style={{color: needColor}}>{this.props.event.need}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -340,7 +399,9 @@ const styles = StyleSheet.create({
   listview: {
     flex: 1,
   },
-  li: {
+  card: {
+    flex: 1,
+    flexDirection: 'column',
     backgroundColor: colors.default.orange,
     borderBottomColor: colors.default.tan,
     borderColor: 'transparent',
@@ -349,6 +410,8 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingTop: 14,
     paddingBottom: 16,
+  },
+  li: {
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
@@ -400,5 +463,9 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingTop: 14,
     paddingBottom: 16,
+  },
+  unfilterButton: {
+    backgroundColor: '#fff',
+    color: '#fff'
   },
 });

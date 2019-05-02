@@ -41,18 +41,21 @@ export default class ProfileScreen extends React.Component {
     super(props);
 
     this.profileRef = constants.firebaseApp.database().ref('Users/'+this.getUser());
-    this.historyRef = constants.firebaseApp.database().ref('Users/'+this.getUser()+'/history');
+    this.userEventsRef = constants.firebaseApp.database().ref('Users/'+this.getUser()+'/history');
+
     this.achieveRef = constants.firebaseApp.database().ref('Users/'+this.getUser()+'/achievements');
     this.eventsRef = constants.firebaseApp.database().ref('Events');
     this.allAchieveRef = constants.firebaseApp.database().ref('Achievements');
     
     const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     const dataSource2 = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+    const dataSourceCurrentEvents = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     
     this.state = {
       profileData: '',
       dataSource: dataSource,
       dataSource2: dataSource2,
+      dataSourceCurrentEvents: dataSourceCurrentEvents,
     }
 
     this.profileRef.once('value', (snap) => {
@@ -76,7 +79,8 @@ export default class ProfileScreen extends React.Component {
   }
 
   componentDidMount(){
-    this.listenForEvents(this.historyRef);
+    this.listenForEvents(this.userEventsRef);
+    this.listenForCurrentEvents(this.userEventsRef);
     this.listenForAchievements(this.achieveRef);
   }
 
@@ -85,17 +89,21 @@ export default class ProfileScreen extends React.Component {
       var events =new Array();
 
       snap.forEach((child) => {
-        var eventVariableRef = this.eventsRef.child(child.val())
+        var eventVariableRef = this.eventsRef.child(child.child("eventID").val()) 
         var eventNameVariable;
         var eventDateVariable;
         eventVariableRef.once('value').then((snapshot) => {
           eventNameVariable = snapshot.child("Name").val()
           eventDateVariable = snapshot.child("Date").val()
-
-          events.push({
-            event: eventNameVariable,
-            date: eventDateVariable,
-          });
+          var atoday = new Date();
+          var aeventDate = new Date(eventDateVariable);
+          
+          if(aeventDate.getTime() < atoday.getTime()){
+            events.push({
+              event: eventNameVariable,
+              date: eventDateVariable,
+            });
+          }
 
           if(events.length > 3){
             events.shift();
@@ -108,7 +116,38 @@ export default class ProfileScreen extends React.Component {
       });
     });
   };
+   listenForCurrentEvents(currentEventsRef) {
+     currentEventsRef.on('value', (snap) => {
+      var currentEvents =new Array();
 
+      snap.forEach((child) => {
+        var currentEventVariableRef = this.eventsRef.child(child.child("eventID").val()) 
+        var currentEventNameVariable;
+        var currentEventDateVariable;
+        currentEventVariableRef.once('value').then((snapshot) => {
+          if(currentEvents.length < 3){
+            currentEventNameVariable = snapshot.child("Name").val()
+            currentEventDateVariable = snapshot.child("Date").val()
+            var atoday = new Date();
+            var aeventDate = new Date(currentEventDateVariable);
+            console.log(aeventDate.getTime() > atoday.getTime())
+            if(aeventDate.getTime() >= atoday.getTime()){
+              currentEvents.push({
+                currentEvents: currentEventNameVariable,
+                date: currentEventDateVariable,
+              });
+            }
+          }
+            
+          this.setState({
+            dataSourceCurrentEvents: this.state.dataSourceCurrentEvents.cloneWithRows(currentEvents)
+          });
+        });
+      });
+     });
+   };
+
+  
   listenForAchievements(allAchieveRef) {
     allAchieveRef.on('value', (snap) => {
       var achievements = new Array();
@@ -215,14 +254,17 @@ export default class ProfileScreen extends React.Component {
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.PieChartSection]}>
-            <PieChart style={styles.pieChart}
-                chart_wh={chart_wh}
-                series={series}
-                sliceColor={sliceColor}
-                doughnut={true} 
-                coverRadius={0.45}
-                coverFill={colors.tan}
-              />
+            <View style={styles.PieChartAndHours}>
+              <PieChart style={styles.pieChart}
+                  chart_wh={chart_wh}
+                  series={series}
+                  sliceColor={sliceColor}
+                  doughnut={true} 
+                  coverRadius={0.45}
+                  coverFill={colors.tan}
+                />
+              <Text style={styles.totalHours}>{this.state.profileData.serviceHours} Total hours</Text>
+            </View>
             
             <View style={styles.legend}>
               <Ionicons
@@ -267,8 +309,19 @@ export default class ProfileScreen extends React.Component {
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.HistorySection]}>
+            <TouchableHighlight onPress={() => Actions.profcurrentevents()}>
+              <Text style={[styles.historyHead]}>Upcoming Events ></Text>
+            </TouchableHighlight>
+            <ListView dataSource={this.state.dataSourceCurrentEvents}
+                  renderRow={this._renderItemCurrentEvent.bind(this)}
+                  style={styles.container} />
+          </View>
+        </View>
+
+        <View style={{borderBottomWidth: 1}}>
+          <View style={[styles.HistorySection]}>
             <TouchableHighlight onPress={() => Actions.profhistory()}>
-              <Text style={[styles.historyHead]}>History ></Text>             
+              <Text style={[styles.historyHead]}>History ></Text>      
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSource}
                   renderRow={this._renderItem.bind(this)}
@@ -279,15 +332,13 @@ export default class ProfileScreen extends React.Component {
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.achievementSection]}>
             <TouchableHighlight onPress={() => Actions.profachievment()}>
-              <Text style={[styles.achievementHead]}>Achievements ></Text>              
+              <Text style={[styles.achievementHead]}>Achievements</Text>              
             </TouchableHighlight>
             <ListView dataSource={this.state.dataSource2}
                   renderRow={this._renderItem2.bind(this)}
                   style={styles.container} />
           </View>
-
         </View>
-
       </ScrollView>
     
     );
@@ -308,6 +359,15 @@ export default class ProfileScreen extends React.Component {
 
     return (<ListItem2 achievements={achievements} />);
   }
+
+  _renderItemCurrentEvent(currentEvents) {
+    const onPress = () => {
+      console.log('Pressed');
+    };
+
+    return (<ListItemCurrentEvents currentEvents={currentEvents} />);
+  }
+
 }
 
 
@@ -330,6 +390,19 @@ class ListItem2 extends Component {
       <TouchableHighlight onPress={this.props.onPress}>
         <View style={styles.li}>
           <Text style={styles.liText}>{this.props.achievements.achievement}</Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+}
+
+class ListItemCurrentEvents extends Component {      
+  render() {
+    return (
+      <TouchableHighlight onPress={this.props.onPress}>
+        <View style={styles.li}>
+          <Text style={styles.liText}>{this.props.currentEvents.currentEvents}</Text>
+          <Text style={styles.asideText}>{this.props.currentEvents.date}</Text>
         </View>
       </TouchableHighlight>
     );
@@ -375,13 +448,18 @@ const styles = StyleSheet.create({
 
   // Middle
   PieChartSection: {
-    // mid is 60%
     flex: 1,
     margin: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  PieChartAndHours: {
+    flex: 1,
+    flexDirection: 'column',
+    margin: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   pieChart: {
     flex: 1.5,
@@ -395,7 +473,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
 
   },
+  totalHours: {
+    fontSize: 24,
 
+  },
 
   // Bottom
   HistorySection: {
