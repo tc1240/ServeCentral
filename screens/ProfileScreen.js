@@ -234,7 +234,6 @@ export default class ProfileScreen extends React.Component {
         ? `ios-bookmarks`
         : 'md-bookmarks'; 
     return (
-      //NEEDS TO BE AN ON CLICK GET EVENT AND DISPLAY EVENT GOTTEN ON EVENT INFO
       <ScrollView style={styles.container}>
 
         <View style={{borderBottomWidth: 1}}>
@@ -260,7 +259,7 @@ export default class ProfileScreen extends React.Component {
                   sliceColor={sliceColor}
                   doughnut={true} 
                   coverRadius={0.45}
-                  coverFill={colors.tan}
+                  coverFill={colors.orange}
                 />
               <Text style={styles.totalHours}>{this.state.profileData.serviceHours} Total hours</Text>
             </View>
