@@ -62,10 +62,14 @@ export default class MapScreen extends React.Component {
     eventsRef.on('value', (snap) => {
       var events = [];
       snap.forEach((child) => {
-        events.push({
-          event: child.val(),
-          _key: child.key,
-        });
+        var today = new Date();
+        var eventDate = new Date(child.val().Date);
+        if(eventDate.getTime() >= today.getTime()){
+          events.push({
+            event: child.val(),
+            _key: child.key,
+          });
+        }
       });
       // Take events gotten and push them onto marker data
       this.setState({

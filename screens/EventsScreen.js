@@ -183,17 +183,20 @@ export default class EventsScreen extends React.Component {
 
         var VolunteerCount = Object.keys(child.val().Attendees).length;
         var Capacity = child.val().Capacity;
-        var need = 'High!'
-        var needColor = '#FF0000'
-        if(Capacity - VolunteerCount <= 0){
-          need = 'Met!'
+        var need;
+        var needColor;
+        if(VolunteerCount / Capacity >= .90){
+          need = 'Popular'
           needColor = '#00FF00'
-        } else if (Capacity - VolunteerCount <= 10){
-          need = 'Low'
+        } else if (VolunteerCount / Capacity >= .65){
+          need = 'Nearly met Goal'
           needColor = '#0000FF'
-        } else if (Capacity - VolunteerCount <= 30){
-          need = 'Medium'
-          needColor = '#FFFF00'
+        } else if (VolunteerCount / Capacity <= .32){
+          need = 'Halfway to Goal'
+          needColor = '#EEA500'
+        } else {
+          need = 'Needs Volunteers!'
+          needColor = '#FF0000'
         }
 
         if(run){
