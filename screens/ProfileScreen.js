@@ -118,7 +118,7 @@ export default class ProfileScreen extends React.Component {
   };
    listenForCurrentEvents(currentEventsRef) {
      currentEventsRef.on('value', (snap) => {
-      var currentEvents =new Array();
+      var currentEvents = new Array();
 
       snap.forEach((child) => {
        var currentEventVariableRef = this.eventsRef.child(child.child("eventID").val()) 
@@ -238,7 +238,7 @@ export default class ProfileScreen extends React.Component {
 
         <View style={{borderBottomWidth: 1}}>
           <View style={[styles.ProfileInfoSection]}>
-           {/* <Image source={require('../assets/images/profPic.png')} style={styles.profPic} />  */} */}
+           {/* <Image source={require('../assets/images/profPic.png')} style={styles.profPic} />  */} 
             <View style={[styles.userInformation]}>
               <Text style={[styles.text, styles.username]}>{this.state.profileData.name}</Text>
               <Text style={[styles.text, styles.email]}>{this.state.profileData.email}</Text>
