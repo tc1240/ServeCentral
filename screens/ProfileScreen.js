@@ -121,27 +121,26 @@ export default class ProfileScreen extends React.Component {
       var currentEvents = new Array();
 
       snap.forEach((child) => {
-        var currentEventVariableRef = this.eventsRef.child(child.child("eventID").val()) 
-        var currentEventNameVariable;
-        var currentEventDateVariable;
-        currentEventVariableRef.once('value').then((snapshot) => {
-          if(currentEvents.length < 3){
-            currentEventNameVariable = snapshot.child("Name").val()
-            currentEventDateVariable = snapshot.child("Date").val()
-            var atoday = new Date();
-            var aeventDate = new Date(currentEventDateVariable);
-            console.log(aeventDate.getTime() > atoday.getTime())
-            if(aeventDate.getTime() >= atoday.getTime()){
-              currentEvents.push({
-                currentEvents: currentEventNameVariable,
-                date: currentEventDateVariable,
-              });
-            }
+       var currentEventVariableRef = this.eventsRef.child(child.child("eventID").val()) 
+       var currentEventNameVariable;
+         var currentEventDateVariable;
+         currentEventVariableRef.once('value').then((snapshot) => {
+          currentEventNameVariable = snapshot.child("Name").val()
+          currentEventDateVariable = snapshot.child("Date").val()
+          var atoday = new Date();
+          var aeventDate = new Date(currentEventDateVariable);
+          console.log(aeventDate.getTime() > atoday.getTime())
+          if(aeventDate.getTime() >= atoday.getTime()){
+
+            currentEvents.push({
+              currentEvents: currentEventNameVariable,
+              date: currentEventDateVariable,
+            });
           }
-            
+          
           this.setState({
             dataSourceCurrentEvents: this.state.dataSourceCurrentEvents.cloneWithRows(currentEvents)
-          });
+         });
         });
       });
      });
@@ -520,7 +519,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.tan,
     borderColor: colors.orange,
     borderWidth: 1,
-    borderRadius: 10,
+    //borderRadius: 10,
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 14,
