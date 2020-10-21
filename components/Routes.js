@@ -9,6 +9,8 @@ import ProfileHistoryScreen from '../screens/ProfileHistoryScreen';
 import RootNavigation from '../navigation/RootNavigation';
 import EventInfoScreen from '../screens/EventInfoScreen'
 import ProfileCurrentEvents from '../screens/ProfileCurrentEvents'
+import EventAddScreen from '../screens/EventAddScreen';
+import SplashScreen from '../screens/SplashScreen';
 
 
 export default class Routes extends React.Component {
@@ -16,13 +18,15 @@ export default class Routes extends React.Component {
         return(
             <Router>
                 <Stack key="root" hideNavBar={true}>
-                    <Scene key="login" component={LoginScreen} initial={true}/>
+                    <Scene key="splash" component={SplashScreen} initial={true}/>
+                    <Scene key="login" component={LoginScreen}/>
                     <Scene key="register" component={RegisterScreen}/>
                     <Scene key="acctmanagement" component={AcctManagementScreen}/>
                     <Scene key="profachievment" component={ProfileAchievementScreen}/>
                     <Scene key="profhistory" component={ProfileHistoryScreen}/>
                     <Scene key="eventinfo" component={EventInfoScreen}/>
                     <Scene key="profcurrentevents" component={ProfileCurrentEvents}/>
+                    <Scene key="eventaddscreen" component={EventAddScreen}/>
                     {/* Main Tab Navigation is the bottom bar navigation */}
                     <Scene key="main" component={RootNavigation}/>
                 </Stack>
